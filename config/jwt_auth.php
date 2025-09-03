@@ -47,36 +47,4 @@ return [
             'max_attempts_per_hour' => (int) env('JWT_REFRESH_MAX_ATTEMPTS_PER_HOUR', 10),
         ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Token Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Configure token settings for JWT authentication.
-    |
-    */
-
-    'token' => [
-        /*
-        |--------------------------------------------------------------------------
-        | Token Name
-        |--------------------------------------------------------------------------
-        |
-        | The name of the token that will be created for authentication.
-        |
-        */
-        'name' => env('JWT_TOKEN_NAME', 'auth_token'),
-
-        /*
-        |--------------------------------------------------------------------------
-        | Token Expiration
-        |--------------------------------------------------------------------------
-        |
-        | The number of minutes after which the token will expire.
-        | Set to null for no expiration.
-        |
-        */
-        'expires_in' => env('JWT_TOKEN_EXPIRES_IN', 60 * 24), // 24 hours
-    ],
 ];
