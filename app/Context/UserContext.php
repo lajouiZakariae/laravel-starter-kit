@@ -7,13 +7,11 @@ use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 
 class UserContext implements UserContextInterface {
-    public function getAuthenticatedUser(): User {
-        $authUser = auth()->user();
+    public function getAuthenticatedUser(): ?User {
+        return auth()->user();
+    }
 
-        if (! $authUser) {
-            throw new AuthenticationException;
-        }
-
-        return $authUser;
+    public function getAuthenticatedUserOrFail(): User {
+        return auth()->user() ?? throw new AuthenticationException;
     }
 }

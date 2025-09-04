@@ -47,7 +47,7 @@ class JWTAuthService {
 
         $this->loginRateLimiterService->clearLoginRateLimit(ipAddress: $ipAddress);
 
-        $user = $this->userContext->getAuthenticatedUser();
+        $user = $this->userContext->getAuthenticatedUserOrFail();
 
         return AuthResultData::from([
             'user' => $user,
@@ -56,13 +56,13 @@ class JWTAuthService {
     }
 
     public function getAuthenticatedUser(): User {
-        return $this->userContext->getAuthenticatedUser();
+        return $this->userContext->getAuthenticatedUserOrFail();
     }
 
     public function refreshToken(): AuthResultData {
         $newToken = JWTAuth::refresh();
 
-        $user = $this->userContext->getAuthenticatedUser();
+        $user = $this->userContext->getAuthenticatedUserOrFail();
 
         return AuthResultData::from([
             'user' => $user,
