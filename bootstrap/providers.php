@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\RateLimiterProvider::class,
+    App\Providers\RateLimiterServiceProvider::class,
 ];

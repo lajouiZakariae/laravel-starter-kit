@@ -32,7 +32,8 @@ return [
         |
         */
         'login' => [
-            'max_attempts_per_hour' => (int) env('JWT_LOGIN_MAX_ATTEMPTS_PER_HOUR', 5),
+            'max_attempts' => (int) env('JWT_LOGIN_MAX_ATTEMPTS', 5),
+            'decay_minutes' => (int) env('JWT_LOGIN_DECAY_MINUTES', 1),
         ],
 
         /*

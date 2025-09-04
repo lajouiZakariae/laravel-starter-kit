@@ -7,7 +7,7 @@ use App\Data\LoginCredentialsData;
 use App\Data\RegisterUserData;
 use App\Interfaces\UserContextInterface;
 use App\Models\User;
-use App\Services\RateLimiters\LoginRateLimiterService;
+use App\Services\RateLimiters\RateLimiterService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class JWTAuthService {
     public function __construct(
         private readonly UserContextInterface $userContext,
-        private readonly LoginRateLimiterService $loginRateLimiterService
+        private readonly RateLimiterService $loginRateLimiterService,
     ) {}
 
     public function register(RegisterUserData $userData): AuthResultData {
@@ -35,17 +35,17 @@ class JWTAuthService {
     }
 
     public function login(LoginCredentialsData $credentials, ?string $ipAddress = null): AuthResultData {
-        $this->loginRateLimiterService->checkLoginRateLimit(ipAddress: $ipAddress);
+        $this->loginRateLimiterService->checkRateLimit($ipAddress);
 
         if (! $token = JWTAuth::attempt($credentials->toArray())) {
-            $this->loginRateLimiterService->hitLoginRateLimit(ipAddress: $ipAddress);
+            $this->loginRateLimiterService->hitRateLimit($ipAddress);
 
             throw ValidationException::withMessages([
                 'email' => [__('auth.failed')],
             ]);
         }
 
-        $this->loginRateLimiterService->clearLoginRateLimit(ipAddress: $ipAddress);
+        $this->loginRateLimiterService->clearRateLimit($ipAddress);
 
         $user = $this->userContext->getAuthenticatedUserOrFail();
 

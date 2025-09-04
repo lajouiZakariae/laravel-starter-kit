@@ -2,17 +2,28 @@
 
 namespace App\Providers;
 
+use App\Services\JWTAuthService;
+use App\Services\RateLimiters\RateLimiterService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
-class RateLimiterProvider extends ServiceProvider {
+class RateLimiterServiceProvider extends ServiceProvider {
     /**
      * Register services.
      */
     public function register(): void {
-        //
+        app()
+            ->when(JWTAuthService::class)
+            ->needs(RateLimiterService::class)
+            ->give(fn (): RateLimiterService => (
+                new RateLimiterService(
+                    throttleName: 'login',
+                    maxAttempts: config()->integer('jwt_auth.rate_limiting.login.max_attempts'),
+                    decayMinutes: config()->integer('jwt_auth.rate_limiting.login.decay_minutes'),
+                )
+            ));
     }
 
     /**
