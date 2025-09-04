@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Data\AuthResultData;
 use App\Data\LoginCredentialsData;
+use App\Data\Mail\UserMailData;
 use App\Data\RegisterUserData;
 use App\Interfaces\UserContextInterface;
 use App\Models\User;
@@ -16,6 +17,7 @@ class JWTAuthService {
     public function __construct(
         private readonly UserContextInterface $userContext,
         private readonly RateLimiterService $loginRateLimiterService,
+        private readonly UserMailerService $userMailerService,
     ) {}
 
     public function register(RegisterUserData $userData): AuthResultData {
@@ -27,6 +29,10 @@ class JWTAuthService {
         ]);
 
         $token = JWTAuth::fromUser($user);
+
+        $userMailData = UserMailData::from($user);
+
+        $this->userMailerService->sendUserRegisteredEmailForUser($userMailData);
 
         return AuthResultData::from([
             'user' => $user,
