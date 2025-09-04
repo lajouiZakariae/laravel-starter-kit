@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Data\LoginCredentialsData;
+use App\Data\Mail\UserMailData;
 use App\Data\RegisterUserData;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\UserRegisteredMail;
 use App\Services\JWTAuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class JWTAuthController {
@@ -23,6 +26,10 @@ class JWTAuthController {
         $registerUserData = RegisterUserData::from($request->only(['first_name', 'last_name', 'email', 'password']));
 
         $result = $this->authService->register($registerUserData);
+
+        $userMailData = UserMailData::from($result->user);
+
+        Mail::to($userMailData->email)->send(new UserRegisteredMail($userMailData));
 
         return UserResource::make($result->user)
             ->additional([
