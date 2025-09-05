@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Rules;
+
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
+
+class ValidOtpLengthRule implements ValidationRule {
+    /**
+     * @param  Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void {
+        if (! is_string($value)) {
+            $fail(__('validation.string', ['attribute' => $attribute]));
+
+            return;
+        }
+
+        if (mb_strlen($value) !== config()->integer('auth.otp.size')) {
+            $errorMessage = __('validation.size.string', ['attribute' => $attribute, 'size' => config()->integer('auth.otp.size')]);
+
+            $fail($errorMessage);
+        }
+    }
+}

@@ -116,4 +116,7 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'otp' => [
+        'size' => env('OTP_SIZE', 6),
+    ],
 ];
