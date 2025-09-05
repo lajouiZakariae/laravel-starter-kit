@@ -15,6 +15,7 @@ describe('Full Authentication Flow', function (): void {
         ];
 
         $registerResponse = $this->post(route('api.auth.register'), $userData);
+
         $registerResponse->assertStatus(201);
 
         $token = $registerResponse->json('meta.token');
@@ -24,6 +25,7 @@ describe('Full Authentication Flow', function (): void {
         ])->getJson('/api/auth/me');
 
         $profileResponse->assertStatus(200);
+
         expect($profileResponse->json('data.email'))->toBe('jane.smith@example.com');
     });
 })->group('jwt-auth');
