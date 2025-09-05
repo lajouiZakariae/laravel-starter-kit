@@ -19,7 +19,7 @@ Route::post('auth/register', [JWTAuthController::class, 'register'])->name('api.
 
 Route::post('auth/login', [JWTAuthController::class, 'login'])->name('api.auth.login');
 
-Route::post('email/send', [EmailVerificationController::class, 'sendVerificationEmail'])->name('api.auth.email.send');
+Route::post('email/send', [EmailVerificationController::class, 'sendVerificationEmail'])->name('api.auth.email.send')->middleware('throttle:send-verification-email');
 
 Route::post('email/verify', [EmailVerificationController::class, 'verifyEmail'])->name('api.auth.email.verify');
 
