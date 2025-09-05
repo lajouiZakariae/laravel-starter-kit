@@ -22,32 +22,34 @@ Artisan::command('make:service {name?}', function (): void {
     }
 });
 
-function makeService(string $name): string {
-    $serviceFileContent = <<<EOT
+if (! function_exists('makeService')) {
+    function makeService(string $name): string {
+        $serviceFileContent = <<<EOT
     <?php
-    
+
     namespace App\Services;
-    
+
     class {$name} {
         public function __construct() {}
     }
     EOT;
 
-    $serviceFilePath = app_path("Services/{$name}.php");
+        $serviceFilePath = app_path("Services/{$name}.php");
 
-    if (File::exists($serviceFilePath)) {
-        throw new \Exception("Service {$name} already exists");
+        if (File::exists($serviceFilePath)) {
+            throw new \Exception("Service {$name} already exists");
+        }
+
+        if (! File::isDirectory(app_path('Services'))) {
+            File::makeDirectory(app_path('Services'), recursive: true);
+        }
+
+        $written = File::put($serviceFilePath, $serviceFileContent);
+
+        if (! $written) {
+            throw new \Exception("Failed to create service {$name}");
+        }
+
+        return $serviceFilePath;
     }
-
-    if (! File::isDirectory(app_path('Services'))) {
-        File::makeDirectory(app_path('Services'), recursive: true);
-    }
-
-    $written = File::put($serviceFilePath, $serviceFileContent);
-
-    if (! $written) {
-        throw new \Exception("Failed to create service {$name}");
-    }
-
-    return $serviceFilePath;
 }
