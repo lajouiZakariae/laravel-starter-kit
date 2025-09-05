@@ -21,6 +21,8 @@ class EmailVerificationController {
 
         $user = $authUser ?? User::where('email', $request->email)->firstOrFail();
 
+        $this->ensureEmailIsNotVerified($user);
+
         $this->emailVerificationService->sendVerificationEmail($user);
 
         return response()->json(['message' => 'Verification email sent']);
@@ -31,12 +33,16 @@ class EmailVerificationController {
 
         $user = $authUser ?? User::where('email', $request->email)->firstOrFail();
 
-        if ($user->hasVerifiedEmail()) {
-            throw new BadRequestHttpException('Email already verified');
-        }
+        $this->ensureEmailIsNotVerified($user);
 
         $this->emailVerificationService->verifyEmail($user, $request->string('otp_code'));
 
         return response()->json(['message' => 'Email verified successfully']);
+    }
+
+    private function ensureEmailIsNotVerified(User $user): void {
+        if ($user->hasVerifiedEmail()) {
+            throw new BadRequestHttpException('Email already verified');
+        }
     }
 }
