@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\EmailVerificationService;
 use App\Services\OtpCacheService;
+use App\Services\PasswordResetService;
 use Illuminate\Support\ServiceProvider;
 
 class OtpCacheServiceProvider extends ServiceProvider {
@@ -17,6 +18,15 @@ class OtpCacheServiceProvider extends ServiceProvider {
             ->give(fn (): OtpCacheService => (
                 new OtpCacheService(
                     cacheKey: 'email_verification',
+                )
+            ));
+
+        app()
+            ->when(PasswordResetService::class)
+            ->needs(OtpCacheService::class)
+            ->give(fn (): OtpCacheService => (
+                new OtpCacheService(
+                    cacheKey: 'password_reset',
                 )
             ));
     }

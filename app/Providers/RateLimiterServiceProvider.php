@@ -47,5 +47,15 @@ class RateLimiterServiceProvider extends ServiceProvider {
 
             return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
         });
+
+        RateLimiter::for('send-password-reset', function (Request $request): Limit {
+            $userEmail = $request->string('email');
+
+            $decayMinutes = config()->integer('jwt_auth.rate_limiting.send_password_reset.decay_minutes');
+
+            $maxAttempts = config()->integer('jwt_auth.rate_limiting.send_password_reset.max_attempts');
+
+            return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
+        });
     }
 }

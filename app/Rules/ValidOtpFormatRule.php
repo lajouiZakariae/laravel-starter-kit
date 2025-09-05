@@ -5,7 +5,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ValidOtpLengthRule implements ValidationRule {
+class ValidOtpFormatRule implements ValidationRule {
     /**
      * @param  Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
@@ -20,6 +20,10 @@ class ValidOtpLengthRule implements ValidationRule {
             $errorMessage = __('validation.size.string', ['attribute' => $attribute, 'size' => config()->integer('auth.otp.size')]);
 
             $fail($errorMessage);
+        }
+
+        if (! preg_match('/^[0-9]+$/', $value)) {
+            $fail(__('validation.numeric', ['attribute' => $attribute]));
         }
     }
 }

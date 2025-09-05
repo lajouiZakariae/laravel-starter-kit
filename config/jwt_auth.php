@@ -60,5 +60,18 @@ return [
             'max_attempts' => (int) env('JWT_SEND_VERIFICATION_EMAIL_MAX_ATTEMPTS', 3),
             'decay_minutes' => (int) env('JWT_SEND_VERIFICATION_EMAIL_DECAY_MINUTES', 5),
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Send Password Reset Rate Limit
+        |--------------------------------------------------------------------------
+        |
+        | Maximum number of password reset requests per time period per user.
+        |
+        */
+        'send_password_reset' => [
+            'max_attempts' => (int) env('JWT_SEND_PASSWORD_RESET_MAX_ATTEMPTS', 3),
+            'decay_minutes' => (int) env('JWT_SEND_PASSWORD_RESET_DECAY_MINUTES', 5),
+        ],
     ],
 ];

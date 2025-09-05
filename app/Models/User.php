@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $last_name
  * @property string $full_name
  * @property string $email
+ * @property string $password
  * @property \Carbon\Carbon $email_verified_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
