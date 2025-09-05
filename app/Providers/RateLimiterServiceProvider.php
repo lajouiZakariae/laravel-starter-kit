@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Services\JWTAuthService;
 use App\Services\RateLimiters\RateLimiterService;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -40,13 +39,13 @@ class RateLimiterServiceProvider extends ServiceProvider {
         RateLimiter::for('send-verification-email', function (Request $request): Limit {
             $authUser = $request->user();
 
-            $user = $authUser ?? User::where('email', $request->email)->firstOrFail(['id', 'email']);
+            $userEmail = $authUser ? $authUser->email : $request->string('email');
 
             $decayMinutes = config()->integer('jwt_auth.rate_limiting.send_verification_email.decay_minutes');
 
             $maxAttempts = config()->integer('jwt_auth.rate_limiting.send_verification_email.max_attempts');
 
-            return Limit::perMinutes($decayMinutes, $maxAttempts)->by($user->email);
+            return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
         });
     }
 }
