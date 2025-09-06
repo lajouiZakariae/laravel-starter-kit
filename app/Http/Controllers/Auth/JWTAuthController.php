@@ -11,6 +11,9 @@ use App\Services\JWTAuthService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
+/**
+ * @tags Auth
+ */
 class JWTAuthController {
     public function __construct(
         private readonly JWTAuthService $authService

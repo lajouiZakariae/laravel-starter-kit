@@ -10,12 +10,18 @@ use App\Services\EmailVerificationService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @tags Email Verification
+ */
 class EmailVerificationController {
     public function __construct(
         private readonly UserContextInterface $userContext,
         private readonly EmailVerificationService $emailVerificationService,
     ) {}
 
+    /**
+     * Send verification email
+     */
     public function sendVerificationEmail(EmailVerificationRequest $request): JsonResponse {
         $authUser = $this->userContext->getAuthenticatedUser();
 
@@ -28,6 +34,9 @@ class EmailVerificationController {
         return response()->json(['message' => 'Verification email sent']);
     }
 
+    /**
+     * Verify email
+     */
     public function verifyEmail(VerifyEmailRequest $request): JsonResponse {
         $authUser = $this->userContext->getAuthenticatedUser();
 

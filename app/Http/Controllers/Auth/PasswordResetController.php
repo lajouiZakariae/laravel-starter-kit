@@ -9,11 +9,17 @@ use App\Models\User;
 use App\Services\PasswordResetService;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * @tags Password Reset
+ */
 class PasswordResetController {
     public function __construct(
         private readonly PasswordResetService $passwordResetService,
     ) {}
 
+    /**
+     * Send password reset code
+     */
     public function sendPasswordResetCode(SendPasswordResetRequest $request): JsonResponse {
         $user = User::where('email', $request->email)->firstOrFail();
 
@@ -22,6 +28,9 @@ class PasswordResetController {
         return response()->json(['message' => 'Password reset code sent']);
     }
 
+    /**
+     * Verify password reset code
+     */
     public function verifyPasswordResetCode(VerifyPasswordResetRequest $request): JsonResponse {
         $user = User::where('email', $request->email)->firstOrFail();
 
@@ -30,6 +39,9 @@ class PasswordResetController {
         return response()->json(['message' => 'Password reset code is valid']);
     }
 
+    /**
+     * Reset password
+     */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse {
         $user = User::where('email', $request->email)->firstOrFail();
 
