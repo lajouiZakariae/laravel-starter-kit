@@ -5,9 +5,10 @@ namespace App\Casts;
 use App\ValueObjects\PhoneNumber;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 
 /**
- * @implements CastsAttributes<PhoneNumber, string>
+ * @implements CastsAttributes<string, PhoneNumber>
  */
 class AsPhoneNumber implements CastsAttributes {
     /**
@@ -15,12 +16,18 @@ class AsPhoneNumber implements CastsAttributes {
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): mixed {
-        if (! is_string($value) || empty($value)) {
-            return null;
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?PhoneNumber {
+        $countryCode = data_get($attributes, 'phone_number_country_code');
+
+        if (! is_string($countryCode) || empty($countryCode)) {
+            throw new InvalidArgumentException('The country code must be a string');
         }
 
-        return new PhoneNumber($value);
+        if (! is_string($value) || empty($value)) {
+            throw new InvalidArgumentException('The value must be a string');
+        }
+
+        return new PhoneNumber($value, $countryCode);
     }
 
     /**
@@ -28,9 +35,9 @@ class AsPhoneNumber implements CastsAttributes {
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): mixed {
+    public function set(Model $model, string $key, mixed $value, array $attributes): ?string {
         if (! $value instanceof PhoneNumber) {
-            throw new \InvalidArgumentException('The value must be an instance of PhoneNumber');
+            throw new InvalidArgumentException('The value must be an instance of PhoneNumber');
         }
 
         return $value->phoneNumber;
