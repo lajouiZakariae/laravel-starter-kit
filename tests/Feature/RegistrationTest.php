@@ -13,6 +13,8 @@ describe('Registration', function (): void {
             'email' => 'john.doe@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
+            'phone_number_country_code' => 'MA',
+            'phone_number' => '+212613080111',
         ];
 
         $response = $this->post(route('api.auth.register'), $userData);

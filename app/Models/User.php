@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AsPhoneNumber;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,6 +16,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $full_name
  * @property string $email
  * @property string $password
+ * @property \App\ValueObjects\PhoneNumber $phone_number
  * @property \Carbon\Carbon $email_verified_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -35,6 +37,8 @@ class User extends Authenticatable implements JWTSubject {
         'last_name',
         'email',
         'password',
+        'phone_number',
+        'phone_number_country_code',
     ];
 
     /**
@@ -56,6 +60,7 @@ class User extends Authenticatable implements JWTSubject {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'phone_number' => AsPhoneNumber::class,
         ];
     }
 

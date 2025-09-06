@@ -12,6 +12,8 @@ describe('Full Authentication Flow', function (): void {
             'email' => 'jane.smith@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
+            'phone_number_country_code' => 'MA',
+            'phone_number' => '+212689898989',
         ];
 
         $registerResponse = $this->post(route('api.auth.register'), $userData);

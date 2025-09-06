@@ -8,6 +8,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\JWTAuthService;
+use App\ValueObjects\PhoneNumber;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
@@ -23,7 +24,12 @@ class JWTAuthController {
      * Register a new user
      */
     public function register(RegisterRequest $request): JsonResponse {
-        $registerUserData = RegisterUserData::from($request->only(['first_name', 'last_name', 'email', 'password']));
+        $validatedPayload = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number_country_code']);
+
+        $registerUserData = RegisterUserData::from([
+            ...$validatedPayload,
+            'phone_number' => new PhoneNumber($request->string('phone_number')),
+        ]);
 
         $result = $this->authService->register($registerUserData);
 

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Propaganistas\LaravelPhone\Rules\Phone;
 
 class RegisterRequest extends FormRequest {
     /**
@@ -21,8 +24,10 @@ class RegisterRequest extends FormRequest {
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone_number_country_code' => ['required', 'string', 'regex:/^[A-Z]{2}$/'],
+            'phone_number' => ['required', (new Phone)->countryField('phone_number_country_code')],
         ];
     }
 }
