@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\JWTAuthController;
-use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\JWTAuthController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use Illuminate\Support\Facades\Route;
 
 /*
