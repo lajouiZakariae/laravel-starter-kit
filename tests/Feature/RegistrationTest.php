@@ -27,6 +27,7 @@ describe('Registration', function (): void {
                     'last_name',
                     'email',
                     'email_verified_at',
+                    'phone_number',
                     'created_at',
                     'updated_at',
                 ],

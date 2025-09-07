@@ -26,6 +26,7 @@ describe('Login', function (): void {
                     'id',
                     'first_name',
                     'last_name',
+                    'phone_number',
                     'email',
                     'email_verified_at',
                     'created_at',

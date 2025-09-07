@@ -24,6 +24,7 @@ class UserResource extends JsonResource {
             'first_name' => $userInstance->first_name,
             'last_name' => $userInstance->last_name,
             'email' => $userInstance->email,
+            'phone_number' => $userInstance->phone_number,
             'email_verified_at' => $userInstance->email_verified_at,
             'created_at' => $userInstance->created_at,
             'updated_at' => $userInstance->updated_at,
