@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use App\Rules\ValidOtpFormatRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,8 +26,8 @@ class ResetPasswordRequest extends FormRequest {
                 'email',
                 Rule::exists(User::class, 'email'),
             ],
-            'otp_code' => ['required', 'string', new ValidOtpFormatRule],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'token' => 'required',
+            'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
 }

@@ -126,4 +126,6 @@ return [
     'aliases' => [
         'CodeGeneratorService' => \App\Facades\CodeGeneratorServiceFacade::class,
     ],
+
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 ];

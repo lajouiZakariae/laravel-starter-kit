@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Data\ResetPasswordData;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\SendPasswordResetRequest;
-use App\Http\Requests\VerifyPasswordResetRequest;
-use App\Models\User;
 use App\Services\PasswordResetService;
 use Illuminate\Http\JsonResponse;
 
@@ -21,36 +20,19 @@ class PasswordResetController {
      * Send password reset code
      */
     public function sendPasswordResetCode(SendPasswordResetRequest $request): JsonResponse {
-        $user = User::where('email', $request->email)->firstOrFail();
-
-        $this->passwordResetService->sendPasswordResetEmail($user);
+        $this->passwordResetService->sendPasswordResetEmail($request->string('email'));
 
         return response()->json(['message' => 'Password reset code sent']);
-    }
-
-    /**
-     * Verify password reset code
-     */
-    public function verifyPasswordResetCode(VerifyPasswordResetRequest $request): JsonResponse {
-        $user = User::where('email', $request->email)->firstOrFail();
-
-        $this->passwordResetService->verifyPasswordResetCode($user, $request->string('otp_code'));
-
-        return response()->json(['message' => 'Password reset code is valid']);
     }
 
     /**
      * Reset password
      */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse {
-        $user = User::where('email', $request->email)->firstOrFail();
+        $resetPasswordData = ResetPasswordData::from($request);
 
-        $this->passwordResetService->resetPassword(
-            $user,
-            $request->string('otp_code'),
-            $request->string('password')
-        );
+        $this->passwordResetService->resetPassword($resetPasswordData);
 
-        return response()->json(['message' => 'Password reset successfully']);
+        return response()->json(['message' => 'Password reset']);
     }
 }

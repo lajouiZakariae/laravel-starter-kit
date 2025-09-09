@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 class PasswordResetMail extends Mailable {
     use Queueable, SerializesModels;
 
-    public function __construct(public readonly string $otpCode) {}
+    public function __construct(public readonly string $url, public readonly int $expiresAfter) {}
 
     public function envelope(): Envelope {
         return new Envelope(
@@ -23,7 +23,8 @@ class PasswordResetMail extends Mailable {
         return new Content(
             view: 'mail.password-reset-mail',
             with: [
-                'otpCode' => $this->otpCode,
+                'url' => $this->url,
+                'expiresAfter' => $this->expiresAfter,
             ],
         );
     }

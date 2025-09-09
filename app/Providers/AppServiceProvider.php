@@ -7,7 +7,10 @@ use App\Interfaces\UserContextInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
-    public $bindings = [
+    /**
+     * @var array<string, string>
+     */
+    public array $bindings = [
         UserContextInterface::class => UserContext::class,
     ];
 

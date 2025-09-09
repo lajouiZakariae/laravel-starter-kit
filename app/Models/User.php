@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use App\Casts\AsPhoneNumber;
+use App\Mail\PasswordResetMail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Uri;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -21,7 +25,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class User extends Authenticatable implements JWTSubject {
+class User extends Authenticatable implements CanResetPassword, JWTSubject {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
@@ -78,6 +82,23 @@ class User extends Authenticatable implements JWTSubject {
      */
     public function getJWTCustomClaims(): array {
         return [];
+    }
+
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void {
+        $frontURI = Uri::of(config()->string('app.frontend_url'))
+            ->withPath('reset-password')
+            ->withQuery(['email' => $this->email, 'token' => $token])
+            ->toStringable()
+            ->toString();
+
+        $count = config()->integer('auth.passwords.' . config()->string('auth.defaults.passwords') . '.expire');
+
+        Mail::to($this->email)->send(new PasswordResetMail($frontURI, $count));
     }
 
     /**
