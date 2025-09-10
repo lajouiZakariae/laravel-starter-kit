@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class EmailVerificationRequest extends FormRequest {
+class LoginRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,17 +18,9 @@ class EmailVerificationRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-
-        $rules = [];
-
-        if (! $this->user()) {
-            $rules['email'] = [
-                'required',
-                'email',
-                Rule::exists(User::class, 'email'),
-            ];
-        }
-
-        return $rules;
+        return [
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ];
     }
 }

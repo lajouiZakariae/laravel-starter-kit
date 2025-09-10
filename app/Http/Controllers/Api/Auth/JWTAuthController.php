@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Data\LoginCredentialsData;
 use App\Data\RegisterUserData;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\JWTAuthService;
 use App\ValueObjects\PhoneNumber;

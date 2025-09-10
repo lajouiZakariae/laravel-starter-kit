@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Models\User;
-use App\Rules\ValidOtpFormatRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class VerifyPasswordResetRequest extends FormRequest {
+class ResetPasswordRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -27,7 +26,8 @@ class VerifyPasswordResetRequest extends FormRequest {
                 'email',
                 Rule::exists(User::class, 'email'),
             ],
-            'otp_code' => ['required', 'string', new ValidOtpFormatRule],
+            'token' => 'required',
+            'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
 }

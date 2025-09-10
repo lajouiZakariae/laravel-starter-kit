@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Requests\EmailVerificationRequest;
-use App\Http\Requests\VerifyEmailRequest;
+use App\Http\Requests\Api\EmailVerificationRequest;
+use App\Http\Requests\Api\VerifyEmailRequest;
 use App\Interfaces\UserContextInterface;
 use App\Models\User;
 use App\Services\EmailVerificationService;

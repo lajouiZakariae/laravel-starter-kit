@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Models\User;
-use App\Rules\ValidOtpFormatRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class VerifyEmailRequest extends FormRequest {
+class EmailVerificationRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -21,9 +20,8 @@ class VerifyEmailRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        $rules = [
-            'otp_code' => ['required', 'string', new ValidOtpFormatRule],
-        ];
+
+        $rules = [];
 
         if (! $this->user()) {
             $rules['email'] = [

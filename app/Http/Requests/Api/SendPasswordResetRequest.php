@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ResetPasswordRequest extends FormRequest {
+class SendPasswordResetRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,8 +26,6 @@ class ResetPasswordRequest extends FormRequest {
                 'email',
                 Rule::exists(User::class, 'email'),
             ],
-            'token' => 'required',
-            'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
 }

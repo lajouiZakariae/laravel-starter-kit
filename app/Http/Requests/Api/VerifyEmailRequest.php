@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Models\User;
+use App\Rules\ValidOtpFormatRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class SendPasswordResetRequest extends FormRequest {
+class VerifyEmailRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,12 +21,18 @@ class SendPasswordResetRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        return [
-            'email' => [
+        $rules = [
+            'otp_code' => ['required', 'string', new ValidOtpFormatRule],
+        ];
+
+        if (! $this->user()) {
+            $rules['email'] = [
                 'required',
                 'email',
                 Rule::exists(User::class, 'email'),
-            ],
-        ];
+            ];
+        }
+
+        return $rules;
     }
 }
