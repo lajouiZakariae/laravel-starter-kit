@@ -23,9 +23,7 @@ class JWTAuthController {
      * Register a new user
      */
     public function register(RegisterRequest $request): JsonResponse {
-        $validatedPayload = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number_country_code', 'phone_number']);
-
-        $registerUserData = RegisterUserData::from($validatedPayload);
+        $registerUserData = RegisterUserData::from($request);
 
         $authResultData = $this->authService->register($registerUserData);
 
