@@ -8,7 +8,6 @@ use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\JWTAuthService;
-use App\ValueObjects\PhoneNumber;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
@@ -24,20 +23,17 @@ class JWTAuthController {
      * Register a new user
      */
     public function register(RegisterRequest $request): JsonResponse {
-        $validatedPayload = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number_country_code']);
+        $validatedPayload = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number_country_code', 'phone_number']);
 
-        $registerUserData = RegisterUserData::from([
-            ...$validatedPayload,
-            'phone_number' => new PhoneNumber($request->string('phone_number')),
-        ]);
+        $registerUserData = RegisterUserData::from($validatedPayload);
 
-        $result = $this->authService->register($registerUserData);
+        $authResultData = $this->authService->register($registerUserData);
 
-        return UserResource::make($result->user)
+        return UserResource::make($authResultData->user)
             ->additional([
                 'meta' => [
-                    'token' => $result->token,
-                    'token_type' => $result->tokenType,
+                    'token' => $authResultData->token,
+                    'token_type' => $authResultData->tokenType,
                     'expires_in' => $this->authService->getTokenExpirationTime(),
                 ],
             ])

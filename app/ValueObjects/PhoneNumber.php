@@ -63,4 +63,8 @@ class PhoneNumber {
     public static function make(string $phoneNumber, ?string $defaultRegion = null): self {
         return new self($phoneNumber, $defaultRegion);
     }
+
+    public function toString(): string {
+        return $this->phoneNumber;
+    }
 }
