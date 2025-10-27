@@ -1,0 +1,49 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Data\Country\CreateCountryData;
+use App\Models\Country;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
+
+class CountrySeeder extends Seeder {
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void {
+        $countriesJsonContent = File::get(storage_path('data/countries.json'));
+
+        $countriesData = collect(json_decode($countriesJsonContent, true));
+
+        $countriesData
+            ->map(fn (array $countryPayload): CreateCountryData => CreateCountryData::from($countryPayload))
+            ->each(function (CreateCountryData $countryData): void {
+                $country = Country::updateOrCreate(
+                    ['iso_3166_1_alpha2' => $countryData->iso31661Alpha2],
+                    [
+                        'iso_3166_1_alpha3' => $countryData->iso31661Alpha3,
+                        'common_name' => $countryData->commonName,
+                        'official_name' => $countryData->officialName,
+                        'is_active' => $countryData->isActive,
+                    ]
+                );
+
+                $actionInformation = $country->wasRecentlyCreated ? 'created' : 'updated';
+
+                dump("Country {$countryData->iso31661Alpha2} {$actionInformation}.");
+
+                if ($country->wasRecentlyCreated) {
+                    $country->addMediaFromUrl($countryData->flag)
+                        ->usingFileName("flag-{$countryData->iso31661Alpha2}.svg")
+                        ->toMediaCollection('flags');
+                } else {
+                    $country->deleteAllMedia();
+
+                    $country->addMediaFromString($countryData->flag)
+                        ->usingFileName("flag-{$countryData->iso31661Alpha2}.svg")
+                        ->toMediaCollection('flags');
+                }
+            });
+    }
+}
