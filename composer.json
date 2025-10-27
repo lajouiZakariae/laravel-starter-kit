@@ -16,6 +16,8 @@
         "laravel/tinker": "^2.10.1",
         "propaganistas/laravel-phone": "^6.0",
         "spatie/laravel-data": "^4.17",
+        "spatie/laravel-medialibrary": "^11.17",
+        "spatie/laravel-translatable": "^6.11",
         "tymon/jwt-auth": "^2.2"
     },
     "require-dev": {
