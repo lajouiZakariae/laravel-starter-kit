@@ -19,7 +19,7 @@ class CountrySeeder extends Seeder {
         $countriesData
             ->map(fn (array $countryPayload): CreateCountryData => CreateCountryData::from($countryPayload))
             ->each(function (CreateCountryData $countryData): void {
-                $country = Country::updateOrCreate(
+                $country = Country::withoutGlobalScopes()->updateOrCreate(
                     ['iso_3166_1_alpha2' => $countryData->iso31661Alpha2],
                     [
                         'iso_3166_1_alpha3' => $countryData->iso31661Alpha3,
