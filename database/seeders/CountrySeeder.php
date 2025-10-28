@@ -23,8 +23,8 @@ class CountrySeeder extends Seeder {
                     ['iso_3166_1_alpha2' => $countryData->iso31661Alpha2],
                     [
                         'iso_3166_1_alpha3' => $countryData->iso31661Alpha3,
-                        'common_name' => $countryData->commonName,
-                        'official_name' => $countryData->officialName,
+                        'common_name' => ($countryData->commonName->toArray()),
+                        'official_name' => $countryData->officialName->toArray(),
                         'is_active' => $countryData->isActive,
                     ]
                 );
@@ -33,17 +33,13 @@ class CountrySeeder extends Seeder {
 
                 dump("Country {$countryData->iso31661Alpha2} {$actionInformation}.");
 
-                if ($country->wasRecentlyCreated) {
-                    $country->addMediaFromUrl($countryData->flag)
-                        ->usingFileName("flag-{$countryData->iso31661Alpha2}.svg")
-                        ->toMediaCollection('flags');
-                } else {
+                if (! $country->wasRecentlyCreated) {
                     $country->deleteAllMedia();
-
-                    $country->addMediaFromString($countryData->flag)
-                        ->usingFileName("flag-{$countryData->iso31661Alpha2}.svg")
-                        ->toMediaCollection('flags');
                 }
+
+                $country->addMediaFromString($countryData->flag)
+                    ->usingFileName("flag-{$countryData->iso31661Alpha2}.svg")
+                    ->toMediaCollection('flags');
             });
     }
 }
