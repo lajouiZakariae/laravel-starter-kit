@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,9 @@ return new class extends Migration {
             $table->string('phone_number');
             $table->rememberToken();
             $table->timestamps();
+
+            // Foreign keys
+            $table->foreignIdFor(Country::class)->nullable()->constrained()->onDelete('set null')->onUpdate('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table): void {
