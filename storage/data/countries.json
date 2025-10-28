@@ -3,7 +3,7 @@
         "common_name": {
             "en": "Andorra",
             "fr": "Andorre",
-            "ar": null
+            "ar": "\u0623\u0646\u062f\u0648\u0631\u0627"
         },
         "official_name": {
             "en": "Principality of Andorra",
@@ -35,7 +35,7 @@
         "common_name": {
             "en": "Afghanistan",
             "fr": "Afghanistan",
-            "ar": null
+            "ar": "\u0623\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646"
         },
         "official_name": {
             "en": "Islamic Republic of Afghanistan",
@@ -51,7 +51,7 @@
         "common_name": {
             "en": "Antigua and Barbuda",
             "fr": "Antigua-et-Barbuda",
-            "ar": null
+            "ar": "\u0623\u0646\u062a\u064a\u063a\u0648\u0627 \u0648\u0628\u0631\u0628\u0648\u062f\u0627"
         },
         "official_name": {
             "en": "Antigua and Barbuda",
@@ -83,7 +83,7 @@
         "common_name": {
             "en": "Albania",
             "fr": "Albanie",
-            "ar": null
+            "ar": "\u0623\u0644\u0628\u0627\u0646\u064a\u0627"
         },
         "official_name": {
             "en": "Republic of Albania",
@@ -99,7 +99,7 @@
         "common_name": {
             "en": "Armenia",
             "fr": "Arm\u00e9nie",
-            "ar": null
+            "ar": "\u0623\u0631\u0645\u064a\u0646\u064a\u0627"
         },
         "official_name": {
             "en": "Republic of Armenia",
@@ -115,7 +115,7 @@
         "common_name": {
             "en": "Angola",
             "fr": "Angola",
-            "ar": null
+            "ar": "\u0623\u0646\u063a\u0648\u0644\u0627"
         },
         "official_name": {
             "en": "Republic of Angola",
@@ -131,7 +131,7 @@
         "common_name": {
             "en": "Antarctica",
             "fr": "Antarctique",
-            "ar": null
+            "ar": "\u0623\u0646\u062a\u0627\u0631\u0643\u062a\u064a\u0643\u0627"
         },
         "official_name": {
             "en": "Antarctica",
@@ -147,7 +147,7 @@
         "common_name": {
             "en": "Argentina",
             "fr": "Argentine",
-            "ar": null
+            "ar": "\u0627\u0644\u0623\u0631\u062c\u0646\u062a\u064a\u0646"
         },
         "official_name": {
             "en": "Argentine Republic",
@@ -163,7 +163,7 @@
         "common_name": {
             "en": "American Samoa",
             "fr": "Samoa am\u00e9ricaines",
-            "ar": null
+            "ar": "\u0633\u0627\u0645\u0648\u0627 \u0627\u0644\u0623\u0645\u0631\u064a\u0643\u064a\u0629"
         },
         "official_name": {
             "en": "American Samoa",
@@ -179,7 +179,7 @@
         "common_name": {
             "en": "Austria",
             "fr": "Autriche",
-            "ar": null
+            "ar": "\u0627\u0644\u0646\u0645\u0633\u0627"
         },
         "official_name": {
             "en": "Republic of Austria",
@@ -195,7 +195,7 @@
         "common_name": {
             "en": "Australia",
             "fr": "Australie",
-            "ar": null
+            "ar": "\u0623\u0633\u062a\u0631\u0627\u0644\u064a\u0627"
         },
         "official_name": {
             "en": "Commonwealth of Australia",
@@ -227,7 +227,7 @@
         "common_name": {
             "en": "\u00c5land Islands",
             "fr": "Ahvenanmaa",
-            "ar": null
+            "ar": "\u062c\u0632\u0631 \u0622\u0644\u0627\u0646\u062f"
         },
         "official_name": {
             "en": "\u00c5land Islands",
@@ -243,7 +243,7 @@
         "common_name": {
             "en": "Azerbaijan",
             "fr": "Azerba\u00efdjan",
-            "ar": null
+            "ar": "\u0623\u0630\u0631\u0628\u064a\u062c\u0627\u0646"
         },
         "official_name": {
             "en": "Republic of Azerbaijan",
@@ -259,7 +259,7 @@
         "common_name": {
             "en": "Bosnia and Herzegovina",
             "fr": "Bosnie-Herz\u00e9govine",
-            "ar": null
+            "ar": "\u0627\u0644\u0628\u0648\u0633\u0646\u0629 \u0648\u0627\u0644\u0647\u0631\u0633\u0643"
         },
         "official_name": {
             "en": "Bosnia and Herzegovina",
@@ -291,7 +291,7 @@
         "common_name": {
             "en": "Bangladesh",
             "fr": "Bangladesh",
-            "ar": null
+            "ar": "\u0628\u0646\u063a\u0644\u0627\u062f\u064a\u0634"
         },
         "official_name": {
             "en": "People's Republic of Bangladesh",
@@ -307,7 +307,7 @@
         "common_name": {
             "en": "Belgium",
             "fr": "Belgique",
-            "ar": null
+            "ar": "\u0628\u0644\u062c\u064a\u0643\u0627"
         },
         "official_name": {
             "en": "Kingdom of Belgium",
@@ -323,7 +323,7 @@
         "common_name": {
             "en": "Burkina Faso",
             "fr": "Burkina Faso",
-            "ar": null
+            "ar": "\u0628\u0648\u0631\u0643\u064a\u0646\u0627 \u0641\u0627\u0633\u0648"
         },
         "official_name": {
             "en": "Burkina Faso",
@@ -339,7 +339,7 @@
         "common_name": {
             "en": "Bulgaria",
             "fr": "Bulgarie",
-            "ar": null
+            "ar": "\u0628\u0644\u063a\u0627\u0631\u064a\u0627"
         },
         "official_name": {
             "en": "Republic of Bulgaria",
@@ -371,7 +371,7 @@
         "common_name": {
             "en": "Burundi",
             "fr": "Burundi",
-            "ar": null
+            "ar": "\u0628\u0648\u0631\u0648\u0646\u062f\u064a"
         },
         "official_name": {
             "en": "Republic of Burundi",
@@ -387,7 +387,7 @@
         "common_name": {
             "en": "Benin",
             "fr": "B\u00e9nin",
-            "ar": null
+            "ar": "\u0628\u0646\u064a\u0646"
         },
         "official_name": {
             "en": "Republic of Benin",
@@ -403,7 +403,7 @@
         "common_name": {
             "en": "Saint Barth\u00e9lemy",
             "fr": "Saint-Barth\u00e9lemy",
-            "ar": null
+            "ar": "\u0633\u0627\u0646 \u0628\u0627\u0631\u062a\u0644\u064a\u0645\u064a"
         },
         "official_name": {
             "en": "Collectivity of Saint Barth\u00e9lemy",
@@ -435,7 +435,7 @@
         "common_name": {
             "en": "Brunei",
             "fr": "Brunei",
-            "ar": null
+            "ar": "\u0628\u0631\u0648\u0646\u0627\u064a"
         },
         "official_name": {
             "en": "Nation of Brunei, Abode of Peace",
@@ -451,7 +451,7 @@
         "common_name": {
             "en": "Bolivia",
             "fr": "Bolivie",
-            "ar": null
+            "ar": "\u0628\u0648\u0644\u064a\u0641\u064a\u0627"
         },
         "official_name": {
             "en": "Plurinational State of Bolivia",
@@ -466,8 +466,8 @@
     {
         "common_name": {
             "en": "Caribbean Netherlands",
-            "fr": "Pays-Bas caribéens",
-            "ar": null
+            "fr": "Pays-Bas carib\u00e9ens",
+            "ar": "\u0627\u0644\u062c\u0632\u0631 \u0627\u0644\u0643\u0627\u0631\u064a\u0628\u064a\u0629 \u0627\u0644\u0647\u0648\u0644\u0646\u062f\u064a\u0629"
         },
         "official_name": {
             "en": "Bonaire, Sint Eustatius and Saba",
@@ -483,7 +483,7 @@
         "common_name": {
             "en": "Brazil",
             "fr": "Br\u00e9sil",
-            "ar": null
+            "ar": "\u0627\u0644\u0628\u0631\u0627\u0632\u064a\u0644"
         },
         "official_name": {
             "en": "Federative Republic of Brazil",
@@ -499,7 +499,7 @@
         "common_name": {
             "en": "Bahamas",
             "fr": "Bahamas",
-            "ar": null
+            "ar": "\u0627\u0644\u0628\u0627\u0647\u0627\u0645\u0627"
         },
         "official_name": {
             "en": "Commonwealth of the Bahamas",
@@ -515,7 +515,7 @@
         "common_name": {
             "en": "Bhutan",
             "fr": "Bhoutan",
-            "ar": null
+            "ar": "\u0628\u0648\u062a\u0627\u0646"
         },
         "official_name": {
             "en": "Kingdom of Bhutan",
