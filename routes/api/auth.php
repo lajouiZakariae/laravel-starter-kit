@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\JWTAuthController;
+use App\Http\Controllers\Api\Auth\OtpPasswordResetController;
 use App\Http\Controllers\Api\Auth\PasswordResetController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,12 @@ Route::post('password/send-reset', [PasswordResetController::class, 'sendPasswor
     ->middleware('throttle:send-password-reset');
 
 Route::post('password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.reset');
+
+Route::post('password/otp/send-reset', [OtpPasswordResetController::class, 'sendPasswordResetCode'])->name('password.otp.send-reset')->middleware('throttle:send-password-reset');
+
+Route::post('password/otp/verify-reset', [OtpPasswordResetController::class, 'verifyPasswordResetCode'])->name('password.otp.verify-reset');
+
+Route::post('password/otp/reset', [OtpPasswordResetController::class, 'resetPassword'])->name('password.otp.reset');
 
 // Protected routes (authentication required)
 Route::middleware('auth:api')->group(function (): void {

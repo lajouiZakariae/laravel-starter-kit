@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Requests\Api;
+
+use App\Models\User;
+use App\Rules\ValidOtpFormatRule;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class OtpResetPasswordRequest extends FormRequest {
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array {
+        return [
+            'email' => [
+                'required',
+                'email',
+                Rule::exists(User::class, 'email'),
+            ],
+            'otp_code' => ['required', 'string', new ValidOtpFormatRule],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ];
+    }
+}
