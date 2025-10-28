@@ -22,24 +22,6 @@ describe('Email Verification', function (): void {
     });
 
     describe('Send Verification Email', function (): void {
-        it('can send verification email for unauthenticated user', function (): void {
-            $user = User::factory()->create([
-                'email' => 'john.doe@example.com',
-                'email_verified_at' => null,
-            ]);
-
-            $response = $this->post(route('api.auth.email.send'), [
-                'email' => $user->email,
-            ]);
-
-            $response->assertStatus(200)
-                ->assertJson([
-                    'message' => 'Verification email sent',
-                ]);
-
-            Mail::assertSent(EmailVerificationMail::class);
-        });
-
         it('can send verification email for authenticated user', function (): void {
             $user = User::factory()->create([
                 'email' => 'john.doe@example.com',
@@ -58,25 +40,15 @@ describe('Email Verification', function (): void {
             Mail::assertSent(EmailVerificationMail::class);
         });
 
-        it('fails to send verification email if user not found', function (): void {
-            $response = $this->post(route('api.auth.email.send'), [
-                'email' => 'nonexistent@example.com',
-            ]);
-
-            $response->assertStatus(422)->assertJsonValidationErrors([
-                'email',
-            ]);
-        });
-
         it('fails to send verification email if email already verified', function (): void {
             $user = User::factory()->create([
                 'email' => 'john.doe@example.com',
                 'email_verified_at' => now(),
             ]);
 
-            $response = $this->post(route('api.auth.email.send'), [
-                'email' => 'john.doe@example.com',
-            ]);
+            $this->actingAs($user, 'api');
+
+            $response = $this->post(route('api.auth.email.send'));
 
             $response->assertStatus(400)
                 ->assertJson([
@@ -90,10 +62,10 @@ describe('Email Verification', function (): void {
                 'email_verified_at' => null,
             ]);
 
-            Collection::times(4, function (int $index) use ($user): void {
-                $response = $this->post(route('api.auth.email.send'), [
-                    'email' => $user->email,
-                ]);
+            $this->actingAs($user, 'api');
+
+            Collection::times(4, function (int $index): void {
+                $response = $this->post(route('api.auth.email.send'));
 
                 ($index < 4) ? $response->assertStatus(200) : $response->assertStatus(429);
             });
@@ -101,30 +73,6 @@ describe('Email Verification', function (): void {
     });
 
     describe('Verify Email', function (): void {
-        it('can verify email for unauthenticated user with valid OTP', function (): void {
-            $user = User::factory()->create([
-                'email' => 'john.doe@example.com',
-                'email_verified_at' => null,
-            ]);
-
-            $otpCode = '123456';
-
-            $this->otpCacheService->cacheOtpCodeForUser($user, $otpCode);
-
-            $response = $this->post(route('api.auth.email.verify'), [
-                'email' => $user->email,
-                'otp_code' => $otpCode,
-            ]);
-
-            $response->assertStatus(200)->assertJson([
-                'message' => 'Email verified successfully',
-            ]);
-
-            $user->refresh();
-
-            expect($user->hasVerifiedEmail())->toBeTrue();
-        });
-
         it('can verify email for authenticated user with valid OTP', function (): void {
             $user = User::factory()->create([
                 'email' => 'john.doe@example.com',

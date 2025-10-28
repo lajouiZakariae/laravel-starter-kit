@@ -23,15 +23,12 @@ class VerifyEmailRequest extends FormRequest {
     public function rules(): array {
         $rules = [
             'otp_code' => ['required', 'string', new ValidOtpFormatRule],
-        ];
-
-        if (! $this->user()) {
-            $rules['email'] = [
+            'email' => [
                 'required',
                 'email',
                 Rule::exists(User::class, 'email'),
-            ];
-        }
+            ],
+        ];
 
         return $rules;
     }

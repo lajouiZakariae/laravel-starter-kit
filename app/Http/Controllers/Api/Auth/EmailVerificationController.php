@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Requests\Api\EmailVerificationRequest;
 use App\Http\Requests\Api\VerifyEmailRequest;
 use App\Interfaces\UserContextInterface;
 use App\Models\User;
@@ -22,14 +21,12 @@ class EmailVerificationController {
     /**
      * Send verification email
      */
-    public function sendVerificationEmail(EmailVerificationRequest $request): JsonResponse {
-        $authUser = $this->userContext->getAuthenticatedUser();
+    public function sendVerificationEmail(): JsonResponse {
+        $authUser = $this->userContext->getAuthenticatedUserOrFail();
 
-        $user = $authUser ?? User::where('email', $request->email)->firstOrFail();
+        $this->ensureEmailIsNotVerified($authUser);
 
-        $this->ensureEmailIsNotVerified($user);
-
-        $this->emailVerificationService->sendVerificationEmail($user);
+        $this->emailVerificationService->sendVerificationEmail($authUser);
 
         return response()->json(['message' => 'Verification email sent']);
     }
@@ -38,13 +35,11 @@ class EmailVerificationController {
      * Verify email
      */
     public function verifyEmail(VerifyEmailRequest $request): JsonResponse {
-        $authUser = $this->userContext->getAuthenticatedUser();
+        $authUser = $this->userContext->getAuthenticatedUserOrFail();
 
-        $user = $authUser ?? User::where('email', $request->email)->firstOrFail();
+        $this->ensureEmailIsNotVerified($authUser);
 
-        $this->ensureEmailIsNotVerified($user);
-
-        $this->emailVerificationService->verifyEmail($user, $request->string('otp_code'));
+        $this->emailVerificationService->verifyEmail($authUser, $request->string('otp_code'));
 
         return response()->json(['message' => 'Email verified successfully']);
     }

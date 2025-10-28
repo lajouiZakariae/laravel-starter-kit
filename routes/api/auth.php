@@ -20,10 +20,6 @@ Route::post('register', [JWTAuthController::class, 'register'])->name('register'
 
 Route::post('login', [JWTAuthController::class, 'login'])->name('login');
 
-Route::post('email/send', [EmailVerificationController::class, 'sendVerificationEmail'])->name('email.send')->middleware('throttle:send-verification-email');
-
-Route::post('email/verify', [EmailVerificationController::class, 'verifyEmail'])->name('email.verify');
-
 Route::post('password/send-reset', [PasswordResetController::class, 'sendPasswordResetCode'])
     ->name('password.send-reset')
     ->middleware('throttle:send-password-reset');
@@ -32,9 +28,13 @@ Route::post('password/reset', [PasswordResetController::class, 'resetPassword'])
 
 // Protected routes (authentication required)
 Route::middleware('auth:api')->group(function (): void {
-    Route::post('auth/refresh', [JWTAuthController::class, 'refresh'])
+    Route::post('refresh', [JWTAuthController::class, 'refresh'])
         ->middleware('throttle:refresh')
         ->name('refresh');
 
     Route::get('me', [JWTAuthController::class, 'me']);
+
+    Route::post('email/otp/send', [EmailVerificationController::class, 'sendVerificationEmail'])->name('email.send')->middleware('throttle:send-verification-email');
+
+    Route::post('email/otp/verify', [EmailVerificationController::class, 'verifyEmail'])->name('email.verify');
 });
