@@ -9,7 +9,7 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table): void {
             $table->id();
             $table->string('iso_3166_1_alpha2', 2)->unique();
             $table->string('iso_3166_1_alpha3', 3)->unique();
