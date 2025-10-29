@@ -27,6 +27,8 @@ class CountryController extends Controller {
             fn ($query) => $query->search($request->search)
         );
 
+        $countriesQuery->with(['media']);
+
         $countriesQuery->orderBy('common_name->en');
 
         $countries = $countriesQuery->paginate($paginationData->perPage);

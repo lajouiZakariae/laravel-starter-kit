@@ -7,6 +7,7 @@ use App\Mail\PasswordResetMail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
@@ -108,5 +109,12 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
         return Attribute::make(
             get: fn (): string => trim((string) $this->first_name . ' ' . (string) $this->last_name),
         );
+    }
+
+    /**
+     * @return BelongsTo<Country, $this>
+     */
+    public function country(): BelongsTo {
+        return $this->belongsTo(Country::class);
     }
 }

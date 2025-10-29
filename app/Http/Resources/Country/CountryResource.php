@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Country;
 
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,12 @@ class CountryResource extends JsonResource {
             'common_name' => $this->whenHas('common_name'),
             'created_at' => $this->whenHas('created_at'),
             'updated_at' => $this->whenHas('updated_at'),
+
+            'flag' => $this->whenLoaded('media', function () use ($countryInstance): MediaResource|null {
+                $flagMedia = $countryInstance->getFirstMedia('flags');
+
+                return $flagMedia ? new MediaResource($flagMedia) : null;
+            }),
         ];
     }
 }
