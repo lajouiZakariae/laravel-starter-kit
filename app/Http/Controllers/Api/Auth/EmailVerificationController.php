@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Concerns\ApiResponse;
 use App\Contracts\UserContextInterface;
 use App\Http\Requests\Api\VerifyEmailRequest;
 use App\Models\User;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * @tags Email Verification
  */
 class EmailVerificationController {
+    use ApiResponse;
+
     public function __construct(
         private readonly UserContextInterface $userContext,
         private readonly EmailVerificationService $emailVerificationService,
@@ -28,7 +31,7 @@ class EmailVerificationController {
 
         $this->emailVerificationService->sendVerificationEmail($authUser);
 
-        return response()->json(['message' => 'Verification email sent']);
+        return $this->successResponse(['message' => 'Verification email sent']);
     }
 
     /**
@@ -41,7 +44,7 @@ class EmailVerificationController {
 
         $this->emailVerificationService->verifyEmail($authUser, $request->string('otp_code'));
 
-        return response()->json(['message' => 'Email verified successfully']);
+        return $this->successResponse(['message' => 'Email verified successfully']);
     }
 
     private function ensureEmailIsNotVerified(User $user): void {
