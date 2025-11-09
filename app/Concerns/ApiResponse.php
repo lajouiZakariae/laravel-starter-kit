@@ -10,7 +10,11 @@ use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 trait ApiResponse {
-    protected function successResponse(JsonResource|ResourceCollection $resource, array $additional = []): JsonResponse {
+    protected function successResponse(JsonResource|ResourceCollection|array $resource, array $additional = []): JsonResponse {
+        if (is_array($resource)) {
+            return response()->json($resource);
+        }
+
         return $resource
             ->additional($additional)
             ->toResponse(app(Request::class))
