@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Contracts\UserContextInterface;
 use App\Http\Requests\Api\VerifyEmailRequest;
-use App\Interfaces\UserContextInterface;
 use App\Models\User;
 use App\Services\EmailVerificationService;
 use Illuminate\Http\JsonResponse;

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Context\UserContext;
-use App\Interfaces\UserContextInterface;
+use App\Contracts\UserContextInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {

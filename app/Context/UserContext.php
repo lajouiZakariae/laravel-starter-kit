@@ -2,7 +2,7 @@
 
 namespace App\Context;
 
-use App\Interfaces\UserContextInterface;
+use App\Contracts\UserContextInterface;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 

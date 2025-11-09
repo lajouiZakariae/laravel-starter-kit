@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Contracts\UserContextInterface;
 use App\Data\AuthResultData;
 use App\Data\LoginCredentialsData;
 use App\Data\Mail\UserMailData;
 use App\Data\RegisterUserData;
-use App\Interfaces\UserContextInterface;
 use App\Models\User;
 use App\Services\RateLimiters\RateLimiterService;
 use Illuminate\Support\Facades\Hash;
