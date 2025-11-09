@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Concerns\ApiResponse;
 use App\Data\LoginCredentialsData;
 use App\Data\RegisterUserData;
 use App\Http\Requests\Api\LoginRequest;
@@ -9,12 +10,13 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\JWTAuthService;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * @tags Auth
  */
 class JWTAuthController {
+    use ApiResponse;
+
     public function __construct(
         private readonly JWTAuthService $authService
     ) {}
@@ -27,22 +29,19 @@ class JWTAuthController {
 
         $authResultData = $this->authService->register($registerUserData);
 
-        return UserResource::make($authResultData->user)
-            ->additional([
-                'meta' => [
-                    'token' => $authResultData->token,
-                    'token_type' => $authResultData->tokenType,
-                    'expires_in' => $this->authService->getTokenExpirationTime(),
-                ],
-            ])
-            ->toResponse($request)
-            ->setStatusCode(SymfonyResponse::HTTP_CREATED);
+        return $this->createdResponse(new UserResource($authResultData->user), [
+            'meta' => [
+                'token' => $authResultData->token,
+                'token_type' => $authResultData->tokenType,
+                'expires_in' => $this->authService->getTokenExpirationTime(),
+            ],
+        ]);
     }
 
     /**
      * Login user and create token
      */
-    public function login(LoginRequest $request): UserResource {
+    public function login(LoginRequest $request): JsonResponse {
         /**
          * @var LoginCredentialsData
          */
@@ -52,7 +51,7 @@ class JWTAuthController {
 
         $result = $this->authService->login($credentials, $ipAddress);
 
-        return UserResource::make($result->user)->additional([
+        return $this->successResponse(new UserResource($result->user), [
             'meta' => [
                 'token' => $result->token,
                 'token_type' => $result->tokenType,
@@ -63,19 +62,19 @@ class JWTAuthController {
     /**
      * Get authenticated user
      */
-    public function me(): UserResource {
+    public function me(): JsonResponse {
         $user = $this->authService->getAuthenticatedUser();
 
-        return new UserResource($user);
+        return $this->successResponse(new UserResource($user));
     }
 
     /**
      * Refresh token
      */
-    public function refresh(): UserResource {
+    public function refresh(): JsonResponse {
         $result = $this->authService->refreshToken();
 
-        return UserResource::make($result->user)->additional([
+        return $this->successResponse(new UserResource($result->user), [
             'meta' => [
                 'token' => $result->token,
                 'token_type' => $result->tokenType,
