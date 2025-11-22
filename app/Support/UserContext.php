@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Context;
+namespace App\Support;
 
 use App\Contracts\UserContextInterface;
 use App\Models\User;

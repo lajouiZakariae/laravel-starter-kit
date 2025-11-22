@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Context\UserContext;
+use App\Support\UserContext;
 use App\Contracts\UserContextInterface;
 use Illuminate\Support\ServiceProvider;
 
