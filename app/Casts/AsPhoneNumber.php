@@ -35,11 +35,11 @@ class AsPhoneNumber implements CastsAttributes {
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): ?string {
+    public function set(Model $model, string $key, mixed $value, array $attributes): array {
         if (! $value instanceof PhoneNumber) {
             throw new InvalidArgumentException('The value must be an instance of PhoneNumber');
         }
 
-        return $value->phoneNumber;
+        return ['phone_number_country_code' => $value->iso2CountryCode, $key => $value->phoneNumber];
     }
 }

@@ -27,8 +27,7 @@ class JWTAuthService {
             'last_name' => $userData->last_name,
             'email' => $userData->email,
             'password' => Hash::make($userData->password),
-            'phone_number' => $userData->phone_number->phoneNumber,
-            'phone_number_country_code' => $userData->phone_number->iso2CountryCode,
+            'phone_number' => $userData->phone_number,
         ]);
 
         $token = JWTAuth::fromUser($user);
