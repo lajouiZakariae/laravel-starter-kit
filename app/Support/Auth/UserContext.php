@@ -2,11 +2,11 @@
 
 namespace App\Support\Auth;
 
-use App\Contracts\UserContext;
+use App\Contracts\UserContext as UserContextContract;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 
-class UserContext implements UserContext {
+class UserContext implements UserContextContract {
     public function getAuthenticatedUser(): ?User {
         return auth()->user();
     }
