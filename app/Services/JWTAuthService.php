@@ -9,6 +9,7 @@ use App\Data\Mail\UserMailData;
 use App\Data\RegisterUserData;
 use App\Models\User;
 use App\Services\RateLimiters\RateLimiterService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -31,6 +32,8 @@ class JWTAuthService {
         ]);
 
         $token = JWTAuth::fromUser($user);
+
+        event(new Registered($user));
 
         $userMailData = UserMailData::from($user);
 
