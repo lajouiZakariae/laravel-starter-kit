@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -26,7 +27,7 @@ class RegisterRequest extends FormRequest {
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone_number_country_code' => ['required', 'string', 'regex:/^[A-Z]{2}$/'],
+            'phone_number_country_code' => ['required', 'string', Rule::exists(Country::class, 'iso_3166_1_alpha2')->where('is_active', true)],
             'phone_number' => ['required', (new Phone)->countryField('phone_number_country_code')],
         ];
     }
