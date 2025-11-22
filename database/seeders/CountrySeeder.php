@@ -29,10 +29,6 @@ class CountrySeeder extends Seeder {
                     ]
                 );
 
-                $actionInformation = $country->wasRecentlyCreated ? 'created' : 'updated';
-
-                dump("Country {$countryData->iso31661Alpha2} {$actionInformation}.");
-
                 if (! $country->wasRecentlyCreated) {
                     $country->deleteAllMedia();
                 }
