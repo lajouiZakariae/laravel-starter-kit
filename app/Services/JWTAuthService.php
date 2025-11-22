@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\UserContextInterface;
+use App\Contracts\UserContext;
 use App\Data\AuthResultData;
 use App\Data\LoginCredentialsData;
 use App\Data\Mail\UserMailData;
@@ -16,7 +16,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JWTAuthService {
     public function __construct(
-        private readonly UserContextInterface $userContext,
+        private readonly UserContext $userContext,
         private readonly RateLimiterService $loginRateLimiterService,
         private readonly UserMailerService $userMailerService,
     ) {}

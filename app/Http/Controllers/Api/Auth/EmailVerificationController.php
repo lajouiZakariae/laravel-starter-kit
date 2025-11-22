@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Concerns\ApiResponse;
-use App\Contracts\UserContextInterface;
+use App\Contracts\UserContext;
 use App\Http\Requests\Api\VerifyEmailRequest;
 use App\Models\User;
 use App\Services\EmailVerificationService;
@@ -17,7 +17,7 @@ class EmailVerificationController {
     use ApiResponse;
 
     public function __construct(
-        private readonly UserContextInterface $userContext,
+        private readonly UserContext $userContext,
         private readonly EmailVerificationService $emailVerificationService,
     ) {}
 

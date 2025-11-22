@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Support\Auth\UserContext;
-use App\Contracts\UserContextInterface;
+use App\Contracts\UserContext;
+use App\Support\Auth\UserContext as UserContextImpl;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider {
      * @var array<string, string>
      */
     public array $bindings = [
-        UserContextInterface::class => UserContext::class,
+        UserContext::class => UserContextImpl::class,
     ];
 
     /**
