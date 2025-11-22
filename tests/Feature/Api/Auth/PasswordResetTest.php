@@ -2,12 +2,12 @@
 
 use App\Mail\PasswordResetMail;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Uri;
 
-uses(RefreshDatabase::class);
-
+/**
+ * @var \Tests\TestCase $this
+ */
 describe('Password Reset', function (): void {
     beforeEach(function (): void {
         Mail::fake();

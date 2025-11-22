@@ -1,11 +1,11 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 
-uses(RefreshDatabase::class);
-
+/**
+ * @var \Tests\TestCase $this
+ */
 describe('Login', function (): void {
     it('can login with valid credentials', function (): void {
         $user = User::factory()->create([

@@ -1,5 +1,7 @@
 <?php
 
+use Tests\ApiTestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,9 +13,9 @@
 |
 */
 
-pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature');
+pest()->extend(ApiTestCase::class)
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->in('Feature\Api');
 
 /*
 |--------------------------------------------------------------------------

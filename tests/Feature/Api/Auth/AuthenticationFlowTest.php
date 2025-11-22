@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
-
+/**
+ * @var \Tests\TestCase $this
+ */
 describe('Full Authentication Flow', function (): void {
     it('can complete basic authentication flow', function (): void {
         $userData = [

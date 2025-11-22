@@ -2,12 +2,12 @@
 
 use App\Models\User;
 use App\Services\OtpCacheService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
-uses(RefreshDatabase::class);
-
+/**
+ * @var \Tests\TestCase $this
+ */
 describe('Password Reset', function (): void {
     beforeEach(function (): void {
         Mail::fake();

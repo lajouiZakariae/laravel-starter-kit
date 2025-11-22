@@ -3,15 +3,12 @@
 use App\Mail\EmailVerificationMail;
 use App\Models\User;
 use App\Services\OtpCacheService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 
 /**
  * @var \Tests\TestCase $this
  */
-uses(RefreshDatabase::class);
-
 describe('Email Verification', function (): void {
     beforeEach(function (): void {
         Mail::fake();

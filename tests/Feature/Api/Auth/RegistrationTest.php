@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
-
+/**
+ * @var \Tests\TestCase $this
+ */
 describe('Registration', function (): void {
     it('can register a new user successfully', function (): void {
         $userData = [

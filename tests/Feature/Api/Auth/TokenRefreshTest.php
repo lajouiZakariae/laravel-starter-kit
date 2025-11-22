@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
-
+/**
+ * @var \Tests\TestCase $this
+ */
 describe('Token Refresh', function (): void {
     it('requires authentication to refresh token', function (): void {
         $response = $this->post(route('api.auth.refresh'));
