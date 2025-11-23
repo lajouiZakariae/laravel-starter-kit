@@ -2,20 +2,26 @@
 
 namespace App\Exceptions\Handlers;
 
+use App\Concerns\ApiResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NotFoundExceptionHandler {
+    use ApiResponse;
+
     public function handle(NotFoundHttpException $exception): JsonResponse|Response {
-        if ($exception->getPrevious() instanceof ModelNotFoundException) {
-            return response()->noContent(SymfonyResponse::HTTP_NOT_FOUND);
+        $previousException = $exception->getPrevious();
+
+        if ($previousException instanceof ModelNotFoundException) {
+            $modelName = $previousException->getModel();
+
+            $titleCase = str(class_basename($modelName))->snake()->replace('_', ' ')->title();
+
+            return $this->notFoundResponse(['message' => "$titleCase not found"]);
         }
 
-        return response()->json([
-            'message' => 'Route not found',
-        ], SymfonyResponse::HTTP_NOT_FOUND);
+        return $this->notFoundResponse(['message' => 'Route not found']);
     }
 }

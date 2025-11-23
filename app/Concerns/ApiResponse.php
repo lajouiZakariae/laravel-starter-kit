@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 trait ApiResponse {
@@ -17,14 +18,18 @@ trait ApiResponse {
 
         return $resource
             ->additional($additional)
-            ->toResponse(app(Request::class))
+            ->toResponse(App::make(Request::class))
             ->setStatusCode(SymfonyResponse::HTTP_OK);
+    }
+
+    protected function notFoundResponse(array $payload = []): JsonResponse {
+        return response()->json($payload, SymfonyResponse::HTTP_NOT_FOUND);
     }
 
     protected function createdResponse(JsonResource $resource, array $additional = []): JsonResponse {
         return $resource
             ->additional($additional)
-            ->toResponse(app(Request::class))
+            ->toResponse(App::make(Request::class))
             ->setStatusCode(SymfonyResponse::HTTP_CREATED);
     }
 
