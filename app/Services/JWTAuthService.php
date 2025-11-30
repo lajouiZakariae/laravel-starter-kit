@@ -22,7 +22,7 @@ class JWTAuthService {
     ) {}
 
     public function register(RegisterUserData $userData): AuthResultData {
-        $user = User::create([
+        $user = User::query()->create([
             'first_name' => $userData->first_name,
             'last_name' => $userData->last_name,
             'email' => $userData->email,

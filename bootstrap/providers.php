@@ -1,7 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\OtpCacheServiceProvider;
+use App\Providers\RateLimiterServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\RateLimiterServiceProvider::class,
-    App\Providers\OtpCacheServiceProvider::class,
+    AppServiceProvider::class,
+    RateLimiterServiceProvider::class,
+    OtpCacheServiceProvider::class,
 ];

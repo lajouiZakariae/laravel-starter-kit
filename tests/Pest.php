@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\ApiTestCase;
 
 /*
@@ -14,7 +15,7 @@ use Tests\ApiTestCase;
 */
 
 pest()->extend(ApiTestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature\Api');
 
 /*
@@ -41,6 +42,6 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function something() {
+function something(): void {
     // ..
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Facades\CodeGeneratorServiceFacade;
+
 return [
 
     /*
@@ -124,7 +126,7 @@ return [
     ],
 
     'aliases' => [
-        'CodeGeneratorService' => \App\Facades\CodeGeneratorServiceFacade::class,
+        'CodeGeneratorService' => CodeGeneratorServiceFacade::class,
     ],
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),

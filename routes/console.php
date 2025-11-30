@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 
 Artisan::command('make:service {name?}', function (): void {
     $name = $this->argument('name');
 
-    while (! filled($name)) {
+    while (blank($name)) {
         $name = $this->ask('Service name is required');
     }
 
@@ -17,7 +18,7 @@ Artisan::command('make:service {name?}', function (): void {
         $serviceFilePath = makeService($preparedName);
 
         $this->info("Service {$preparedName} created successfully at {$serviceFilePath}.");
-    } catch (\Throwable $th) {
+    } catch (Throwable $th) {
         $this->error($th->getMessage());
     }
 });
@@ -37,7 +38,7 @@ if (! function_exists('makeService')) {
         $serviceFilePath = app_path("Services/{$name}.php");
 
         if (File::exists($serviceFilePath)) {
-            throw new \Exception("Service {$name} already exists");
+            throw new Exception("Service {$name} already exists");
         }
 
         if (! File::isDirectory(app_path('Services'))) {
@@ -47,7 +48,7 @@ if (! function_exists('makeService')) {
         $written = File::put($serviceFilePath, $serviceFileContent);
 
         if (! $written) {
-            throw new \Exception("Failed to create service {$name}");
+            throw new Exception("Failed to create service {$name}");
         }
 
         return $serviceFilePath;

@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Database\Seeders\CountrySeeder;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class ApiTestCase extends BaseTestCase {
@@ -12,6 +13,6 @@ abstract class ApiTestCase extends BaseTestCase {
             'Accept' => 'application/json',
         ]);
 
-        $this->seed(\Database\Seeders\CountrySeeder::class);
+        $this->seed(CountrySeeder::class);
     }
 }

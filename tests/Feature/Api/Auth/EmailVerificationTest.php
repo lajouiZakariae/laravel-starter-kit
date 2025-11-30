@@ -4,6 +4,7 @@ use App\Mail\EmailVerificationMail;
 use App\Models\User;
 use App\Services\OtpCacheService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -13,7 +14,7 @@ describe('Email Verification', function (): void {
     beforeEach(function (): void {
         Mail::fake();
 
-        $this->otpCacheService = app(OtpCacheService::class, [
+        $this->otpCacheService = App::make(OtpCacheService::class, [
             'cacheKey' => 'email_verification',
         ]);
     });

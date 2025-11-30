@@ -30,7 +30,7 @@ class PhoneNumber {
 
             $nationalPhoneNumber = $libPhoneNumber->getNationalNumber();
 
-            if (! filled($nationalPhoneNumber)) {
+            if (blank($nationalPhoneNumber)) {
                 throw new PhoneNumberException("Invalid national phone number: {$phoneNumber}");
             }
 
@@ -38,7 +38,7 @@ class PhoneNumber {
 
             $numericCountryCode = $libPhoneNumber->getCountryCode();
 
-            if (! filled($numericCountryCode)) {
+            if (blank($numericCountryCode)) {
                 throw new PhoneNumberException("Invalid numeric country code: {$phoneNumber}");
             }
 
@@ -46,7 +46,7 @@ class PhoneNumber {
 
             $iso2CountryCode = $phoneUtil->getRegionCodeForNumber($libPhoneNumber);
 
-            if (! filled($iso2CountryCode)) {
+            if (blank($iso2CountryCode)) {
                 throw new PhoneNumberException("Invalid ISO 2 country code: {$phoneNumber}");
             }
 

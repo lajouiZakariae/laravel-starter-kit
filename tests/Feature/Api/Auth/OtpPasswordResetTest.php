@@ -1,7 +1,9 @@
 <?php
 
+use App\Mail\OtpPasswordResetMail;
 use App\Models\User;
 use App\Services\OtpCacheService;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -12,7 +14,7 @@ describe('Password Reset', function (): void {
     beforeEach(function (): void {
         Mail::fake();
 
-        $this->otpCacheService = app(OtpCacheService::class, [
+        $this->otpCacheService = App::make(OtpCacheService::class, [
             'cacheKey' => 'password_reset',
         ]);
     });
@@ -30,7 +32,7 @@ describe('Password Reset', function (): void {
             $response->assertStatus(200)
                 ->assertJson(['message' => 'Password reset code sent']);
 
-            Mail::assertSent(\App\Mail\OtpPasswordResetMail::class);
+            Mail::assertSent(OtpPasswordResetMail::class);
         });
     });
 

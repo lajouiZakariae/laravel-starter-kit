@@ -19,11 +19,11 @@ class AsPhoneNumber implements CastsAttributes {
     public function get(Model $model, string $key, mixed $value, array $attributes): ?PhoneNumber {
         $countryCode = data_get($attributes, 'phone_number_country_code');
 
-        if (! is_string($countryCode) || empty($countryCode)) {
+        if (! is_string($countryCode) || blank($countryCode)) {
             throw new InvalidArgumentException('The country code must be a string');
         }
 
-        if (! is_string($value) || empty($value)) {
+        if (! is_string($value) || blank($value)) {
             throw new InvalidArgumentException('The value must be a string');
         }
 

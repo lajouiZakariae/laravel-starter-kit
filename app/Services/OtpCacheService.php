@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Date;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class OtpCacheService {
@@ -13,7 +13,7 @@ class OtpCacheService {
     public function cacheOtpCodeForUser(User $user, string $otpCode): void {
         $cacheKey = $this->getCacheKeyForUser($user);
 
-        $ttl = Carbon::now()->addMinutes(2);
+        $ttl = Date::now()->addMinutes(2);
 
         Cache::put($cacheKey, $otpCode, $ttl);
     }
@@ -23,7 +23,7 @@ class OtpCacheService {
 
         $otpFromCache = Cache::get($cacheKey);
 
-        if (! filled($otpFromCache) || ! is_string($otpFromCache)) {
+        if (blank($otpFromCache) || ! is_string($otpFromCache)) {
             throw new BadRequestHttpException('OTP code not found');
         }
 

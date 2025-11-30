@@ -26,7 +26,7 @@ class ResetPasswordRequest extends FormRequest {
                 'email',
                 Rule::exists(User::class, 'email'),
             ],
-            'token' => 'required',
+            'token' => ['required'],
             'password' => ['required', 'min:8', 'confirmed'],
         ];
     }

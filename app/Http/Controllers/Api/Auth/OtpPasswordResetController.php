@@ -18,7 +18,7 @@ class OtpPasswordResetController {
     ) {}
 
     public function sendPasswordResetCode(SendPasswordResetRequest $request): JsonResponse {
-        $user = User::where('email', $request->string('email'))->firstOrFail();
+        $user = User::query()->where('email', $request->string('email'))->firstOrFail();
 
         $this->passwordResetService->sendOtpPasswordResetEmail($user);
 
@@ -26,7 +26,7 @@ class OtpPasswordResetController {
     }
 
     public function verifyPasswordResetCode(VerifyPasswordResetRequest $request): JsonResponse {
-        $user = User::where('email', $request->string('email'))->firstOrFail();
+        $user = User::query()->where('email', $request->string('email'))->firstOrFail();
 
         $this->passwordResetService->verifyOtpPasswordResetCode($user, $request->string('otp_code'));
 
@@ -34,7 +34,7 @@ class OtpPasswordResetController {
     }
 
     public function resetPassword(OtpResetPasswordRequest $request): JsonResponse {
-        $user = User::where('email', $request->string('email'))->firstOrFail();
+        $user = User::query()->where('email', $request->string('email'))->firstOrFail();
 
         $this->passwordResetService->resetOtpPassword(
             $user,
