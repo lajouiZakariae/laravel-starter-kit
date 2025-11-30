@@ -5,11 +5,21 @@ namespace App\Providers;
 use App\Services\JWTAuthService;
 use App\Services\RateLimiters\RateLimiterService;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class RateLimiterServiceProvider extends ServiceProvider {
+    /**
+     * Create a new service provider instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     */
+    public function __construct($app, private readonly Repository $repository) {
+        parent::__construct($app);
+    }
+
     /**
      * Register services.
      */
@@ -20,8 +30,8 @@ class RateLimiterServiceProvider extends ServiceProvider {
             ->give(fn (): RateLimiterService => (
                 new RateLimiterService(
                     throttleName: 'login',
-                    maxAttempts: config()->integer('jwt_auth.rate_limiting.login.max_attempts'),
-                    decayMinutes: config()->integer('jwt_auth.rate_limiting.login.decay_minutes'),
+                    maxAttempts: $this->repository->integer('jwt_auth.rate_limiting.login.max_attempts'),
+                    decayMinutes: $this->repository->integer('jwt_auth.rate_limiting.login.decay_minutes'),
                 )
             ));
     }
@@ -31,7 +41,7 @@ class RateLimiterServiceProvider extends ServiceProvider {
      */
     public function boot(): void {
         RateLimiter::for('refresh', function (Request $request): Limit {
-            $refreshMaxAttemptsPerHour = config()->integer('jwt_auth.rate_limiting.refresh.max_attempts_per_hour');
+            $refreshMaxAttemptsPerHour = $this->repository->integer('jwt_auth.rate_limiting.refresh.max_attempts_per_hour');
 
             return Limit::perHour($refreshMaxAttemptsPerHour)->by($request->user()?->id ?: $request->ip());
         });
@@ -41,9 +51,9 @@ class RateLimiterServiceProvider extends ServiceProvider {
 
             $userEmail = $authUser ? $authUser->email : $request->string('email');
 
-            $decayMinutes = config()->integer('jwt_auth.rate_limiting.send_verification_email.decay_minutes');
+            $decayMinutes = $this->repository->integer('jwt_auth.rate_limiting.send_verification_email.decay_minutes');
 
-            $maxAttempts = config()->integer('jwt_auth.rate_limiting.send_verification_email.max_attempts');
+            $maxAttempts = $this->repository->integer('jwt_auth.rate_limiting.send_verification_email.max_attempts');
 
             return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
         });
@@ -51,9 +61,9 @@ class RateLimiterServiceProvider extends ServiceProvider {
         RateLimiter::for('send-password-reset', function (Request $request): Limit {
             $userEmail = $request->string('email');
 
-            $decayMinutes = config()->integer('jwt_auth.rate_limiting.send_password_reset.decay_minutes');
+            $decayMinutes = $this->repository->integer('jwt_auth.rate_limiting.send_password_reset.decay_minutes');
 
-            $maxAttempts = config()->integer('jwt_auth.rate_limiting.send_password_reset.max_attempts');
+            $maxAttempts = $this->repository->integer('jwt_auth.rate_limiting.send_password_reset.max_attempts');
 
             return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
         });

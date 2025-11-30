@@ -5,16 +5,19 @@ namespace Database\Seeders;
 use App\Data\Country\CreateCountryData;
 use App\Models\Country;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 
 class CountrySeeder extends Seeder {
+    public function __construct(private readonly Filesystem $filesystem) {}
+
     /**
      * Run the database seeds.
      */
     public function run(): void {
-        $countriesJsonContent = File::get(storage_path('data/countries.json'));
+        $countriesJsonContent = $this->filesystem->get(storage_path('data/countries.json'));
 
-        $countriesData = collect(json_decode($countriesJsonContent, true));
+        $countriesData = new Collection(json_decode((string) $countriesJsonContent, true));
 
         $countriesData
             ->map(fn (array $countryPayload): CreateCountryData => CreateCountryData::from($countryPayload))

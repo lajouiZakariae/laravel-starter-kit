@@ -3,9 +3,12 @@
 namespace App\Rules;
 
 use Closure;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class ValidOtpFormatRule implements ValidationRule {
+    public function __construct(private readonly Repository $repository) {}
+
     /**
      * @param  Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
@@ -16,8 +19,8 @@ class ValidOtpFormatRule implements ValidationRule {
             return;
         }
 
-        if (mb_strlen($value) !== config()->integer('auth.otp.size')) {
-            $errorMessage = __('validation.size.string', ['attribute' => $attribute, 'size' => config()->integer('auth.otp.size')]);
+        if (mb_strlen($value) !== $this->repository->integer('auth.otp.size')) {
+            $errorMessage = __('validation.size.string', ['attribute' => $attribute, 'size' => $this->repository->integer('auth.otp.size')]);
 
             $fail($errorMessage);
         }

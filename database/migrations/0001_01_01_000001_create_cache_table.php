@@ -2,20 +2,22 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Builder;
 
 return new class extends Migration {
+    public function __construct(private readonly Builder $builder) {}
+
     /**
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('cache', function (Blueprint $table): void {
+        $this->builder->create('cache', function (Blueprint $table): void {
             $table->string('key')->primary();
             $table->mediumText('value');
             $table->integer('expiration');
         });
 
-        Schema::create('cache_locks', function (Blueprint $table): void {
+        $this->builder->create('cache_locks', function (Blueprint $table): void {
             $table->string('key')->primary();
             $table->string('owner');
             $table->integer('expiration');
@@ -26,7 +28,7 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('cache');
-        Schema::dropIfExists('cache_locks');
+        $this->builder->dropIfExists('cache');
+        $this->builder->dropIfExists('cache_locks');
     }
 };

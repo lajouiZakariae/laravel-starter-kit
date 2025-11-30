@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 
 class DatabaseSeeder extends Seeder {
+    public function __construct(private readonly Filesystem $filesystem) {}
+
     /**
      * Seed the application's database.
      */
@@ -18,11 +20,11 @@ class DatabaseSeeder extends Seeder {
 
         // User::factory(60)->create();
 
-        $content = File::json(storage_path('data/countries.json'));
+        $content = $this->filesystem->json(storage_path('data/countries.json'));
 
-        $collection = collect($content);
+        $collection = new Collection($content);
 
-        File::put(storage_path('data/names-countries.json'), $collection
+        $this->filesystem->put(storage_path('data/names-countries.json'), $collection
             ->filter(fn ($item): bool => $item['common_name']['ar'] === null)
             ->pluck('common_name')
             ->toPrettyJson());

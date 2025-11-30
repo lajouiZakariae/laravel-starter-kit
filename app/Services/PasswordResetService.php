@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Data\ResetPasswordData;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Passwords\PasswordBrokerManager;
+use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -14,10 +16,13 @@ class PasswordResetService {
     public function __construct(
         private readonly UserMailerService $userMailerService,
         private readonly OtpCacheService $otpCacheService,
+        private readonly PasswordBrokerManager $passwordBrokerManager,
+        private readonly Hasher $hasher,
+        private readonly Dispatcher $dispatcher,
     ) {}
 
     public function sendPasswordResetEmail(string $email): void {
-        $status = Password::sendResetLink(['email' => $email]);
+        $status = $this->passwordBrokerManager->sendResetLink(['email' => $email]);
 
         if ($status !== Password::ResetLinkSent) {
             throw new BadRequestHttpException('Password reset code could not be sent');
@@ -25,14 +30,14 @@ class PasswordResetService {
     }
 
     public function resetPassword(ResetPasswordData $data): void {
-        $status = Password::reset($data->toArray(), function (User $user, string $password): void {
+        $status = $this->passwordBrokerManager->reset($data->toArray(), function (User $user, string $password): void {
             $user->forceFill([
-                'password' => Hash::make($password),
+                'password' => $this->hasher->make($password),
             ]);
 
             $user->save();
 
-            event(new PasswordReset($user));
+            $this->dispatcher->dispatch(new PasswordReset($user));
         });
 
         if ($status !== Password::PasswordReset) {
@@ -74,7 +79,7 @@ class PasswordResetService {
         $this->otpCacheService->deleteOtpCodeForUser($user);
 
         $user->update([
-            'password' => Hash::make($newPassword),
+            'password' => $this->hasher->make($newPassword),
         ]);
     }
 }

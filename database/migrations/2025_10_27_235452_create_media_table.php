@@ -2,11 +2,13 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Builder;
 
 return new class extends Migration {
+    public function __construct(private readonly Builder $builder) {}
+
     public function up(): void {
-        Schema::create('media', function (Blueprint $table): void {
+        $this->builder->create('media', function (Blueprint $table): void {
             $table->id();
 
             $table->morphs('model');

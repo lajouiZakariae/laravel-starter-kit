@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Casts\AsPhoneNumber;
 use App\Mail\PasswordResetMail;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Mail\Mailer;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Uri;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -57,6 +58,15 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
     ];
 
     /**
+     * Create a new Eloquent model instance.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    public function __construct(array $attributes, private readonly Mailer $mailer, private readonly Repository $repository) {
+        parent::__construct($attributes);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -91,15 +101,15 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
      * @param  string  $token
      */
     public function sendPasswordResetNotification($token): void {
-        $frontURI = Uri::of(config()->string('app.frontend_url'))
+        $frontURI = Uri::of($this->repository->string('app.frontend_url'))
             ->withPath('reset-password')
             ->withQuery(['email' => $this->email, 'token' => $token])
             ->toStringable()
             ->toString();
 
-        $count = config()->integer('auth.passwords.' . config()->string('auth.defaults.passwords') . '.expire');
+        $count = $this->repository->integer('auth.passwords.' . $this->repository->string('auth.defaults.passwords') . '.expire');
 
-        Mail::to($this->email)->send(new PasswordResetMail($frontURI, $count));
+        $this->mailer->to($this->email)->send(new PasswordResetMail($frontURI, $count));
     }
 
     /**
