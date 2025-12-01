@@ -9,6 +9,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Mail\Mailer;
 use Illuminate\Notifications\Notifiable;
@@ -62,7 +63,7 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function __construct(array $attributes, private readonly Mailer $mailer, private readonly Repository $repository) {
+    public function __construct(array $attributes, private readonly Application $application) {
         parent::__construct($attributes);
     }
 
@@ -101,15 +102,19 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
      * @param  string  $token
      */
     public function sendPasswordResetNotification($token): void {
-        $frontURI = Uri::of($this->repository->string('app.frontend_url'))
+        $configRepository = $this->application->make(Repository::class);
+
+        $mailer = $this->application->make(Mailer::class);
+
+        $frontURI = Uri::of($configRepository->string('app.frontend_url'))
             ->withPath('reset-password')
             ->withQuery(['email' => $this->email, 'token' => $token])
             ->toStringable()
             ->toString();
 
-        $count = $this->repository->integer('auth.passwords.' . $this->repository->string('auth.defaults.passwords') . '.expire');
+        $count = $configRepository->integer('auth.passwords.' . $configRepository->string('auth.defaults.passwords') . '.expire');
 
-        $this->mailer->to($this->email)->send(new PasswordResetMail($frontURI, $count));
+        $mailer->to($this->email)->send(new PasswordResetMail($frontURI, $count));
     }
 
     /**

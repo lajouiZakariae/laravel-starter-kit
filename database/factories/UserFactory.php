@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\ValueObjects\PhoneNumber;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -22,7 +23,7 @@ class UserFactory extends Factory {
      * @param  int|null  $count
      * @param  \UnitEnum|string|null  $connection
      */
-    public function __construct($count, ?\Illuminate\Support\Collection $states = null, ?\Illuminate\Support\Collection $has = null, ?\Illuminate\Support\Collection $for = null, ?\Illuminate\Support\Collection $afterMaking = null, ?\Illuminate\Support\Collection $afterCreating = null, $connection, ?\Illuminate\Support\Collection $recycle = null, ?bool $expandRelationships, array $excludeRelationships, private readonly Hasher $hasher) {
+    public function __construct($count, ?Collection $states = null, ?Collection $has = null, ?Collection $for = null, ?Collection $afterMaking = null, ?Collection $afterCreating = null, $connection = null, ?Collection $recycle = null, ?bool $expandRelationships = null, array $excludeRelationships = [], private readonly ?Hasher $hasher = null) {
         parent::__construct($count, $states, $has, $for, $afterMaking, $afterCreating, $connection, $recycle, $expandRelationships, $excludeRelationships);
     }
 
