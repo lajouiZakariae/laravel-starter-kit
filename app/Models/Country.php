@@ -59,6 +59,9 @@ class Country extends Model implements HasMedia {
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\City, $this>
+     */
     public function cities(): HasMany {
         return $this->hasMany(City::class);
     }
