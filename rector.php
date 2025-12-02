@@ -3,7 +3,11 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Transform\Rector\FuncCall\FuncCallToNewRector;
+use Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector;
+use Rector\Transform\ValueObject\StaticCallToMethodCall;
 use RectorLaravel\Rector\Empty_\EmptyToBlankAndFilledFuncRector;
+use RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector;
 use RectorLaravel\Rector\FuncCall\ConfigToTypedConfigMethodCallRector;
 use RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector;
 use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
@@ -11,6 +15,8 @@ use RectorLaravel\Rector\MethodCall\WhereToWhereLikeRector;
 use RectorLaravel\Rector\StaticCall\RequestStaticValidateToInjectRector;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
+use RectorLaravel\ValueObject\ArgumentFuncCallToMethodCall;
+use RectorLaravel\ValueObject\ArrayFuncCallToMethodCall;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -40,6 +46,43 @@ return RectorConfig::configure()
         RemoveDumpDataDeadCodeRector::class,
         WhereToWhereLikeRector::class,
     ])
+    ->withConfiguredRule(StaticCallToMethodCallRector::class, [
+        new StaticCallToMethodCall(
+            'Illuminate\Support\Facades\Artisan',
+            '*',
+            'Illuminate\Contracts\Console\Kernel',
+            '*'
+        ),
+        new StaticCallToMethodCall(
+            'Illuminate\Support\Facades\Cache',
+            '*',
+            'Illuminate\Cache\CacheManager',
+            '*'
+        ),
+        new StaticCallToMethodCall(
+            'Illuminate\Support\Facades\DB',
+            '*',
+            'Illuminate\Database\DatabaseManager',
+            '*'
+        ),
+        new StaticCallToMethodCall(
+            'Illuminate\Support\Facades\URL',
+            '*',
+            'Illuminate\Routing\UrlGenerator',
+            '*'
+        ),
+        new StaticCallToMethodCall(
+            'Illuminate\Support\Facades\Config',
+            '*',
+            'Illuminate\Config\Repository',
+            '*'
+        ),
+        new StaticCallToMethodCall('Illuminate\Support\Facades\Auth', '*', 'Illuminate\Auth\AuthManager', '*'),
+    ])
+    ->withConfiguredRule(ArgumentFuncCallToMethodCallRector::class, [
+        new ArrayFuncCallToMethodCall('config', 'Illuminate\Contracts\Config\Repository', 'set', 'get'),
+        new ArgumentFuncCallToMethodCall('auth', 'Illuminate\Contracts\Auth\Guard'),
+    ])
     ->withSets([
         LaravelSetList::LARAVEL_CODE_QUALITY,
         LaravelSetList::LARAVEL_COLLECTION,
@@ -51,7 +94,6 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
         LaravelSetList::LARAVEL_FACTORIES,
         LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
-        LaravelSetList::LARAVEL_STATIC_TO_INJECTION,
     ])
     ->withPhpSets()
     ->withTypeCoverageLevel(10)
