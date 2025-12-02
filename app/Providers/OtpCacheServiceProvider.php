@@ -18,6 +18,7 @@ class OtpCacheServiceProvider extends ServiceProvider {
             ->give(fn (): OtpCacheService => (
                 new OtpCacheService(
                     cacheKey: 'email_verification',
+
                 )
             ));
 

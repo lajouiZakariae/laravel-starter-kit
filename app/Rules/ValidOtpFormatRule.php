@@ -5,22 +5,25 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\App;
 
 class ValidOtpFormatRule implements ValidationRule {
-    public function __construct(private readonly Repository $repository) {}
+    public function __construct() {}
 
     /**
      * @param  Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
+        $configRepository = App::make(Repository::class);
+
         if (! is_string($value)) {
             $fail(__('validation.string', ['attribute' => $attribute]));
 
             return;
         }
 
-        if (mb_strlen($value) !== $this->repository->integer('auth.otp.size')) {
-            $errorMessage = __('validation.size.string', ['attribute' => $attribute, 'size' => $this->repository->integer('auth.otp.size')]);
+        if (mb_strlen($value) !== $configRepository->integer('auth.otp.size')) {
+            $errorMessage = __('validation.size.string', ['attribute' => $attribute, 'size' => $configRepository->integer('auth.otp.size')]);
 
             $fail($errorMessage);
         }

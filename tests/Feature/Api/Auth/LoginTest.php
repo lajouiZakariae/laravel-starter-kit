@@ -4,7 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @var \Tests\TestCase $this
+ * @var \Tests\ApiTestCase $this
  */
 describe('Login', function (): void {
     it('can login with valid credentials', function (): void {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \Tests\TestCase $this
+ * @var \Tests\ApiTestCase $this
  */
 describe('Full Authentication Flow', function (): void {
     it('can complete basic authentication flow', function (): void {

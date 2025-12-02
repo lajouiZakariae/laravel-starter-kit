@@ -4,24 +4,29 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Cache\CacheManager;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class OtpCacheService {
-    public function __construct(private readonly string $cacheKey, private readonly CacheManager $cacheManager) {}
+    public function __construct(private readonly string $cacheKey) {}
 
     public function cacheOtpCodeForUser(User $user, string $otpCode): void {
         $cacheKey = $this->getCacheKeyForUser($user);
 
         $ttl = Date::now()->addMinutes(2);
 
-        $this->cacheManager->put($cacheKey, $otpCode, $ttl);
+        $cacheManager = App::make(CacheManager::class);
+
+        $cacheManager->put($cacheKey, $otpCode, $ttl);
     }
 
     public function getOtpCodeForUser(User $user): string {
         $cacheKey = $this->getCacheKeyForUser($user);
 
-        $otpFromCache = $this->cacheManager->get($cacheKey);
+        $cacheManager = App::make(CacheManager::class);
+
+        $otpFromCache = $cacheManager->get($cacheKey);
 
         if (blank($otpFromCache) || ! is_string($otpFromCache)) {
             throw new BadRequestHttpException('OTP code not found');
@@ -33,7 +38,9 @@ class OtpCacheService {
     public function deleteOtpCodeForUser(User $user): void {
         $cacheKey = $this->getCacheKeyForUser($user);
 
-        $this->cacheManager->forget($cacheKey);
+        $cacheManager = App::make(CacheManager::class);
+
+        $cacheManager->forget($cacheKey);
     }
 
     private function getCacheKeyForUser(User $user): string {

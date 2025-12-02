@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Uri;
 
 /**
- * @var \Tests\TestCase $this
+ * @var \Tests\ApiTestCase $this
  */
 describe('Password Reset', function (): void {
     beforeEach(function (): void {

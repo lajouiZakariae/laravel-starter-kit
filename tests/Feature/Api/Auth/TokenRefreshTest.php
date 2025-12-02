@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \Tests\TestCase $this
+ * @var \Tests\ApiTestCase $this
  */
 describe('Token Refresh', function (): void {
     it('requires authentication to refresh token', function (): void {

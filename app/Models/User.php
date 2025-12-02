@@ -9,10 +9,10 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Mail\Mailer;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Uri;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -59,15 +59,6 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
     ];
 
     /**
-     * Create a new Eloquent model instance.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
-    public function __construct(array $attributes, private readonly Application $application) {
-        parent::__construct($attributes);
-    }
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -102,9 +93,9 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
      * @param  string  $token
      */
     public function sendPasswordResetNotification($token): void {
-        $configRepository = $this->application->make(Repository::class);
+        $configRepository = App::make(Repository::class);
 
-        $mailer = $this->application->make(Mailer::class);
+        $mailer = App::make(Mailer::class);
 
         $frontURI = Uri::of($configRepository->string('app.frontend_url'))
             ->withPath('reset-password')

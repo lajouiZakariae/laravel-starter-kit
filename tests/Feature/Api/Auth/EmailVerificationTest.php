@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * @var \Tests\TestCase $this
+ * @var \Tests\ApiTestCase $this
  */
 describe('Email Verification', function (): void {
     beforeEach(function (): void {

@@ -3,7 +3,7 @@
 use App\Models\User;
 
 /**
- * @var \Tests\TestCase $this
+ * @var \Tests\ApiTestCase $this
  */
 describe('Registration', function (): void {
     it('can register a new user successfully', function (): void {

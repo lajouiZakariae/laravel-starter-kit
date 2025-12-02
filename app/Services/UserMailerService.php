@@ -6,7 +6,7 @@ use App\Data\Mail\UserMailData;
 use App\Mail\EmailVerificationMail;
 use App\Mail\OtpPasswordResetMail;
 use App\Mail\UserRegisteredMail;
-use Illuminate\Mail\Mailer;
+use Illuminate\Contracts\Mail\Mailer;
 
 class UserMailerService {
     public function __construct(private readonly Mailer $mailer) {}
