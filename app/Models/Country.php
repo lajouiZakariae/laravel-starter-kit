@@ -46,7 +46,7 @@ class Country extends Model implements HasMedia {
     }
 
     #[Scope]
-    protected function search(Builder $query, string $search) {
+    protected function search(Builder $query, string $search): Builder {
         return $query->where(function (Builder $q) use ($search): void {
             $q->whereJsonContains('common_name->en', $search)
                 ->orWhereJsonContains('common_name->ar', $search)
