@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\ActiveCountry;
+use App\Models\Scopes\ActiveEntity;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,9 +12,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
-#[ScopedBy(ActiveCountry::class)]
+#[ScopedBy(ActiveEntity::class)]
 class Country extends Model implements HasMedia {
-    use HasFactory;
     use HasFactory;
     use HasTranslations;
     use InteractsWithMedia;
