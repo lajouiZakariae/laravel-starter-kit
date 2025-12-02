@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Concerns\ApiResponse;
 use App\Data\PaginationData;
 use App\Data\SortingData;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Country\CountryResource;
+use App\Http\Responses\ApiResponse;
 use App\Models\Country;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class CountryController extends Controller {
-    use ApiResponse;
+    public function __construct(
+        private readonly ApiResponse $apiResponse
+    ) {}
 
     /**
      * Display a listing of the countries.
@@ -46,13 +48,13 @@ class CountryController extends Controller {
 
         $countries = $countriesQuery->paginate($paginationData->perPage);
 
-        return $this->successResponse(CountryResource::collection($countries));
+        return $this->apiResponse->successResponse(CountryResource::collection($countries));
     }
 
     /**
      * Display the specified country.
      */
     public function show(Country $country): JsonResponse {
-        return $this->successResponse(new CountryResource($country));
+        return $this->apiResponse->successResponse(new CountryResource($country));
     }
 }

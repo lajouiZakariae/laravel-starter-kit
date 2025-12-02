@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Concerns\ApiResponse;
 use App\Data\LoginCredentialsData;
 use App\Data\RegisterUserData;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Resources\User\UserResource;
+use App\Http\Responses\ApiResponse;
 use App\Services\JWTAuthService;
 use Illuminate\Http\JsonResponse;
 
@@ -15,10 +15,9 @@ use Illuminate\Http\JsonResponse;
  * @tags Auth
  */
 class JWTAuthController {
-    use ApiResponse;
-
     public function __construct(
-        private readonly JWTAuthService $authService
+        private readonly JWTAuthService $authService,
+        private readonly ApiResponse $apiResponse,
     ) {}
 
     /**
@@ -29,7 +28,7 @@ class JWTAuthController {
 
         $authResultData = $this->authService->register($registerUserData);
 
-        return $this->createdResponse(new UserResource($authResultData->user), [
+        return $this->apiResponse->createdResponse(new UserResource($authResultData->user), [
             'meta' => [
                 'token' => $authResultData->token,
                 'token_type' => $authResultData->tokenType,
@@ -51,7 +50,7 @@ class JWTAuthController {
 
         $result = $this->authService->login($credentials, $ipAddress);
 
-        return $this->successResponse(new UserResource($result->user), [
+        return $this->apiResponse->successResponse(new UserResource($result->user), [
             'meta' => [
                 'token' => $result->token,
                 'token_type' => $result->tokenType,
@@ -65,7 +64,7 @@ class JWTAuthController {
     public function me(): JsonResponse {
         $user = $this->authService->getAuthenticatedUser();
 
-        return $this->successResponse(new UserResource($user));
+        return $this->apiResponse->successResponse(new UserResource($user));
     }
 
     /**
@@ -74,7 +73,7 @@ class JWTAuthController {
     public function refresh(): JsonResponse {
         $result = $this->authService->refreshToken();
 
-        return $this->successResponse(new UserResource($result->user), [
+        return $this->apiResponse->successResponse(new UserResource($result->user), [
             'meta' => [
                 'token' => $result->token,
                 'token_type' => $result->tokenType,

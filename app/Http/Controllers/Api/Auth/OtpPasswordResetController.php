@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Concerns\ApiResponse;
 use App\Http\Requests\Api\OtpResetPasswordRequest;
 use App\Http\Requests\Api\SendPasswordResetRequest;
 use App\Http\Requests\Api\VerifyPasswordResetRequest;
+use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use App\Services\PasswordResetService;
 use Illuminate\Http\JsonResponse;
 
 class OtpPasswordResetController {
-    use ApiResponse;
-
     public function __construct(
         private readonly PasswordResetService $passwordResetService,
+        private readonly ApiResponse $apiResponse,
     ) {}
 
     public function sendPasswordResetCode(SendPasswordResetRequest $request): JsonResponse {
@@ -22,7 +21,7 @@ class OtpPasswordResetController {
 
         $this->passwordResetService->sendOtpPasswordResetEmail($user);
 
-        return $this->successResponse(['message' => 'Password reset code sent']);
+        return $this->apiResponse->successResponse(['message' => 'Password reset code sent']);
     }
 
     public function verifyPasswordResetCode(VerifyPasswordResetRequest $request): JsonResponse {
@@ -30,7 +29,7 @@ class OtpPasswordResetController {
 
         $this->passwordResetService->verifyOtpPasswordResetCode($user, $request->string('otp_code'));
 
-        return $this->successResponse(['message' => 'Password reset code is valid']);
+        return $this->apiResponse->successResponse(['message' => 'Password reset code is valid']);
     }
 
     public function resetPassword(OtpResetPasswordRequest $request): JsonResponse {
@@ -42,6 +41,6 @@ class OtpPasswordResetController {
             $request->string('password')
         );
 
-        return $this->successResponse(['message' => 'Password reset successfully']);
+        return $this->apiResponse->successResponse(['message' => 'Password reset successfully']);
     }
 }
