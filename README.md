@@ -117,3 +117,9 @@ Pint ensures your code style is consistent across the project, saving you from e
 # Run Pint with verbose output
 ./vendor/bin/pint -v
 ```
+
+### Commands to Run
+
+```bash
+./vendor/bin/rector --clear-cache && ./vendor/bin/pint
+```
