@@ -35,7 +35,7 @@ class CityController extends Controller {
 
         $citiesQuery->when(
             $request->filled('search'),
-            fn ($query) => $query->where('name', 'like', "%{$request->search}%")
+            fn ($query) => $query->whereLike('name', "%{$request->search}%")
         );
 
         $citiesQuery->when(
@@ -59,9 +59,7 @@ class CityController extends Controller {
      */
     public function show(string $id): JsonResponse {
         $city = City::query()
-            ->with('country', function (Relation $query) {
-                return $query->select(['id', 'iso_3166_1_alpha2', 'common_name']);
-            })
+            ->with('country', fn (Relation $query) => $query->select(['id', 'iso_3166_1_alpha2', 'common_name']))
             ->findOrFail($id, ['id', 'country_id', 'name']);
 
         return $this->apiResponse->successResponse(new CityResource($city));
