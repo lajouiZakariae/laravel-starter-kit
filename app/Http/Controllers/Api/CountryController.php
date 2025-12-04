@@ -23,7 +23,7 @@ class CountryController extends Controller {
     public function index(Request $request, PaginationData $paginationData): JsonResponse {
         $request->validate([
             'search' => ['sometimes', 'string', 'max:255'],
-            'sort_by' => ['sometimes', 'string', 'in:common_name,iso_3166_1_alpha2'],
+            'sort_by' => ['sometimes', 'string', Rule::in(['common_name', 'iso_3166_1_alpha2'])],
             'order' => ['sometimes', 'string', Rule::in(['asc', 'desc'])],
         ]);
 
