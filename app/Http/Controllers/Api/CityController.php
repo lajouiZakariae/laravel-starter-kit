@@ -57,6 +57,9 @@ class CityController extends Controller {
      * Display the specified city.
      */
     public function show(City $city): JsonResponse {
+
+        $city->load('country');
+
         return $this->apiResponse->successResponse(new CityResource($city));
     }
 }
