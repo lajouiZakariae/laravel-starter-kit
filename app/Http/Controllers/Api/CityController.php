@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\City\CityResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -56,9 +57,12 @@ class CityController extends Controller {
     /**
      * Display the specified city.
      */
-    public function show(City $city): JsonResponse {
-
-        $city->load('country');
+    public function show(string $id): JsonResponse {
+        $city = City::query()
+            ->with('country', function (Relation $query) {
+                return $query->select(['id', 'iso_3166_1_alpha2', 'common_name']);
+            })
+            ->findOrFail($id, ['id', 'country_id', 'name']);
 
         return $this->apiResponse->successResponse(new CityResource($city));
     }
