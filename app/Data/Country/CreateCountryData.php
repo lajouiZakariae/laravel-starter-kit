@@ -2,7 +2,7 @@
 
 namespace App\Data\Country;
 
-use App\Data\city\CreateCityData;
+use App\Data\City\CreateCityData;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;

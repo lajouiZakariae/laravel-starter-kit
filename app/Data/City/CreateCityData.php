@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\city;
+namespace App\Data\City;
 
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;

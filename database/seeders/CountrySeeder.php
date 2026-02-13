@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Data\city\CreateCityData;
+use App\Data\City\CreateCityData;
 use App\Data\Country\CreateCountryData;
 use App\Models\Country;
 use Illuminate\Database\Seeder;
