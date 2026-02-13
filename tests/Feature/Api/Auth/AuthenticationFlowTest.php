@@ -23,7 +23,7 @@ describe('Full Authentication Flow', function (): void {
 
         $profileResponse = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->getJson('/api/auth/me');
+        ])->getJson(route('api.auth.me'));
 
         $profileResponse->assertStatus(200);
 

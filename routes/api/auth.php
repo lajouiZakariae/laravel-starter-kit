@@ -39,7 +39,7 @@ Route::middleware('auth:api')->group(function (): void {
         ->middleware('throttle:refresh')
         ->name('refresh');
 
-    Route::get('me', [JWTAuthController::class, 'me']);
+    Route::get('me', [JWTAuthController::class, 'me'])->name('me');
 
     Route::post('email/otp/send', [EmailVerificationController::class, 'sendVerificationEmail'])->name('email.send')->middleware('throttle:send-verification-email');
 
