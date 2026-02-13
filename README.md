@@ -4,15 +4,16 @@ Hey you, this is a production-ready Laravel starter kit that comes pre-configure
 
 ## ✨ Features
 
--   **🔐 JWT Authentication** - Secure token-based authentication out of the box
--   **📊 PHPStan with Larastan** - Static analysis for bulletproof code
--   **🔧 Rector** - Automated code refactoring and modernization
--   **✨ Laravel Pint** - For code formatting
--   **🧪 Testing Setup** - Feature and unit tests included
+- **🔐 JWT Authentication** - Secure token-based authentication out of the box
+- **🌍 Countries & Cities API** - Ready-to-use endpoints for geographical data
+- **📊 PHPStan with Larastan** - Static analysis for bulletproof code
+- **🔧 Rector** - Automated code refactoring and modernization
+- **✨ Laravel Pint** - For code formatting
+- **🧪 Testing Setup** - Feature and unit tests included
 
 ## 🛠️ Requirements
 
--   PHP 8.2 or higher
+- PHP 8.2 or higher
 
 ### 📝 Instructions
 
@@ -63,8 +64,23 @@ php artisan storage:link
 
 ```bash
 php artisan serve
-
 ```
+
+## 🌍 API Endpoints
+
+The starter kit includes ready-to-use API endpoints for geographical data:
+
+### Countries
+
+- **GET** `/api/countries` - List all countries
+- **GET** `/api/countries/{id}` - Get a specific country
+
+### Cities
+
+- **GET** `/api/cities` - List all cities
+- **GET** `/api/cities/{id}` - Get a specific city
+
+All endpoints return JSON responses and support standard HTTP status codes.
 
 ## Code Quality Tools 🛠️
 
