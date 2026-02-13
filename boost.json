@@ -1,0 +1,12 @@
+{
+    "agents": [
+        "copilot"
+    ],
+    "packages": [
+        "spatie/laravel-medialibrary"
+    ],
+    "skills": [
+        "pest-testing",
+        "medialibrary-development"
+    ]
+}
