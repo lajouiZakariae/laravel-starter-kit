@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Transform\Rector\FuncCall\FuncCallToNewRector;
 use Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector;
 use Rector\Transform\ValueObject\StaticCallToMethodCall;
 use RectorLaravel\Rector\Empty_\EmptyToBlankAndFilledFuncRector;
@@ -15,7 +14,6 @@ use RectorLaravel\Rector\MethodCall\WhereToWhereLikeRector;
 use RectorLaravel\Rector\StaticCall\RequestStaticValidateToInjectRector;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
-use RectorLaravel\ValueObject\ArgumentFuncCallToMethodCall;
 use RectorLaravel\ValueObject\ArrayFuncCallToMethodCall;
 
 return RectorConfig::configure()
@@ -81,7 +79,6 @@ return RectorConfig::configure()
     ])
     ->withConfiguredRule(ArgumentFuncCallToMethodCallRector::class, [
         new ArrayFuncCallToMethodCall('config', 'Illuminate\Contracts\Config\Repository', 'set', 'get'),
-        new ArgumentFuncCallToMethodCall('auth', 'Illuminate\Contracts\Auth\Guard'),
     ])
     ->withSets([
         LaravelSetList::LARAVEL_CODE_QUALITY,
