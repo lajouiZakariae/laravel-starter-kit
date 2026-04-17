@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use App\Models\Scopes\ActiveEntity;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -14,6 +15,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
 #[ScopedBy(ActiveEntity::class)]
+#[Fillable([
+    'iso_3166_1_alpha2',
+    'iso_3166_1_alpha3',
+    'common_name',
+    'official_name',
+    'is_active',
+])]
 class Country extends Model implements HasMedia {
     use HasFactory;
     use HasTranslations;
@@ -22,14 +30,6 @@ class Country extends Model implements HasMedia {
     public array $translatable = [
         'common_name',
         'official_name',
-    ];
-
-    protected $fillable = [
-        'iso_3166_1_alpha2',
-        'iso_3166_1_alpha3',
-        'common_name',
-        'official_name',
-        'is_active',
     ];
 
     protected function casts(): array {
