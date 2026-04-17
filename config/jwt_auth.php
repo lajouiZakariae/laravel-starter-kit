@@ -21,6 +21,19 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Refresh Token TTL
+    |--------------------------------------------------------------------------
+    |
+    | The length of time (in minutes) that the refresh token is valid for.
+    | Defaults to 7 days (10080 minutes).
+    |
+    */
+    'refresh_token_ttl' => (int) env('JWT_REFRESH_TOKEN_TTL', 10080),
+
+    'ttl' => (int) env('JWT_TTL', 120),
+
     'rate_limiting' => [
         /*
         |--------------------------------------------------------------------------

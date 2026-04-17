@@ -9,6 +9,7 @@ class AuthResultData extends Data {
     public function __construct(
         public User $user,
         public string $token,
+        public ?string $refreshToken,
         public string $tokenType = 'Bearer',
     ) {}
 }
