@@ -51,7 +51,7 @@ class JWTAuthController {
         /**
          * @var LoginCredentialsData
          */
-        $credentials = LoginCredentialsData::from($request->only(['email', 'password', 'signed_in_as']));
+        $credentials = LoginCredentialsData::from($request->only(['email', 'password']));
 
         $ipAddress = $request->ip();
 

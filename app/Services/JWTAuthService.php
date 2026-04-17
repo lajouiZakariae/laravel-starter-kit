@@ -7,7 +7,6 @@ use App\Data\AuthResultData;
 use App\Data\LoginCredentialsData;
 use App\Data\Mail\UserMailData;
 use App\Data\RegisterUserData;
-use App\Enums\Role\UserRoleEnum;
 use App\Models\User;
 use App\Services\RateLimiters\RateLimiterService;
 use Illuminate\Auth\Events\Registered;
@@ -48,8 +47,8 @@ class JWTAuthService {
 
         return AuthResultData::from([
             'user' => $user,
-            'token' => $this->generateAccessToken($user, UserRoleEnum::CLIENT->value),
-            'refresh_token' => $this->generateRefreshToken($user, UserRoleEnum::CLIENT->value),
+            'token' => $this->generateAccessToken($user),
+            'refresh_token' => $this->generateRefreshToken($user),
         ]);
     }
 
@@ -68,23 +67,12 @@ class JWTAuthService {
 
         $user = $this->userContext->getAuthenticatedUserOrFail();
 
-        $isValidRole = match ($credentials->signed_in_as) {
-            UserRoleEnum::CLIENT => $user->hasRole(UserRoleEnum::CLIENT->value),
-            UserRoleEnum::PROFESSIONAL => $user->hasAnyRole([UserRoleEnum::PROFESSIONAL->value, UserRoleEnum::COLLABORATOR->value]),
-        };
-
-        if (! $isValidRole) {
-            throw ValidationException::withMessages([
-                'signed_in_as' => [__('auth.role_mismatch', ['role' => $credentials->signed_in_as->value])],
-            ]);
-        }
-
         $this->userService->loadRelations($user);
 
         return AuthResultData::from([
             'user' => $user,
-            'token' => $this->generateAccessToken($user, $credentials->signed_in_as->value),
-            'refresh_token' => $this->generateRefreshToken($user, $credentials->signed_in_as->value),
+            'token' => $this->generateAccessToken($user),
+            'refresh_token' => $this->generateRefreshToken($user),
         ]);
     }
 
@@ -111,16 +99,14 @@ class JWTAuthService {
 
         $user = User::query()->findOrFail($payload->get('sub'));
 
-        $signedInAs = $payload->get('signed_in_as', '');
-
         JWTAuth::setToken($rawRefreshToken)->invalidate();
 
         $this->userService->loadRelations($user);
 
         return AuthResultData::from([
             'user' => $user,
-            'token' => $this->generateAccessToken($user, $signedInAs),
-            'refresh_token' => $this->generateRefreshToken($user, $signedInAs),
+            'token' => $this->generateAccessToken($user),
+            'refresh_token' => $this->generateRefreshToken($user),
         ]);
     }
 
@@ -132,16 +118,16 @@ class JWTAuthService {
         return $this->repository->integer('jwt_auth.refresh_token_ttl') * 60;
     }
 
-    public function generateAccessToken(User $user, string $signedInAs): string {
+    public function generateAccessToken(User $user): string {
         JWTAuth::factory()->setTTL($this->repository->integer('jwt.ttl'));
 
-        return JWTAuth::customClaims(['signed_in_as' => $signedInAs])->fromUser($user);
+        return JWTAuth::fromUser($user);
     }
 
-    public function generateRefreshToken(User $user, string $signedInAs): string {
+    public function generateRefreshToken(User $user): string {
         JWTAuth::factory()->setTTL($this->repository->integer('jwt_auth.refresh_token_ttl'));
 
-        $token = JWTAuth::customClaims(['typ' => 'refresh', 'signed_in_as' => $signedInAs])->fromUser($user);
+        $token = JWTAuth::fromUser($user);
 
         // Reset so TTL/claims don't leak into subsequent token generation
         JWTAuth::factory()
