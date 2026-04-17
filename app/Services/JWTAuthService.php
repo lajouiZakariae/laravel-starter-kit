@@ -111,15 +111,15 @@ class JWTAuthService {
     }
 
     public function getTokenExpirationTime(): int {
-        return $this->repository->integer('jwt.ttl') * 60;
+        return $this->repository->integer('jwt.ttl');
     }
 
     public function getRefreshTokenExpirationTime(): int {
-        return $this->repository->integer('jwt_auth.refresh_token_ttl') * 60;
+        return $this->repository->integer('jwt_auth.refresh_token_ttl');
     }
 
     public function generateAccessToken(User $user): string {
-        JWTAuth::factory()->setTTL($this->repository->integer('jwt.ttl'));
+        JWTAuth::factory()->setTTL($this->repository->integer('jwt_auth.ttl'))->typ('access')->claims([]);
 
         return JWTAuth::fromUser($user);
     }
@@ -127,7 +127,7 @@ class JWTAuthService {
     public function generateRefreshToken(User $user): string {
         JWTAuth::factory()->setTTL($this->repository->integer('jwt_auth.refresh_token_ttl'));
 
-        $token = JWTAuth::fromUser($user);
+        $token = JWTAuth::customClaims(['typ' => 'refresh'])->fromUser($user);
 
         // Reset so TTL/claims don't leak into subsequent token generation
         JWTAuth::factory()
