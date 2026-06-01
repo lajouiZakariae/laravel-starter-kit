@@ -195,6 +195,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'phone_number' => 'phone number',
+        'phone_number_country_code' => 'phone number country code',
+    ],
 
 ];
