@@ -18,14 +18,11 @@ Route::post('register', [JWTAuthController::class, 'register'])->name('register'
 
 Route::post('login', [JWTAuthController::class, 'login'])->name('login');
 
-// Protected routes (authentication required)
-Route::middleware('auth:api')->group(function (): void {
-    Route::post('refresh', [JWTAuthController::class, 'refresh'])
-        ->middleware('throttle:refresh')
-        ->name('refresh');
+Route::post('refresh', [JWTAuthController::class, 'refresh'])
+    ->middleware('throttle:refresh')
+    ->name('refresh');
 
-    Route::get('user', [JWTAuthController::class, 'me'])->name('user');
-});
+Route::get('user', [JWTAuthController::class, 'me'])->name('user')->middleware('auth:api');
 
 require __DIR__ . '/password-reset.php';
 
