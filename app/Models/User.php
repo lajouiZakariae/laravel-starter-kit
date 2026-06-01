@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Casts\AsPhoneNumber;
 use App\Mail\PasswordResetMail;
-use App\Notifications\Auth\VerifyEmail;
 use App\ValueObjects\PhoneNumber;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
@@ -99,16 +98,9 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
 
         $count = $configRepository->get('auth.passwords.' . $configRepository->get('auth.defaults.passwords') . '.expire');
 
-        $mailer->to($this->email)->send(new PasswordResetMail($frontURI, $count));
-    }
+        $mail = (new PasswordResetMail($frontURI, $count))->onQueue('user-emails-queue');
 
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    public function sendEmailVerificationNotification() {
-        $this->notify(new VerifyEmail);
+        $mailer->to($this->email)->queue($mail);
     }
 
     /**
