@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-class ApiResponse {
+class ApiResponse implements \App\Contracts\Http\ApiResponse {
     public function __construct(
         private readonly Application $application,
         private readonly ResponseFactory $responseFactory,
@@ -49,5 +49,9 @@ class ApiResponse {
 
     public function emptyResponse(): Response {
         return $this->responseFactory->noContent();
+    }
+
+    public function acceptedResponse(array $additional = []): JsonResponse {
+        return $this->responseFactory->json($additional, SymfonyResponse::HTTP_ACCEPTED);
     }
 }
