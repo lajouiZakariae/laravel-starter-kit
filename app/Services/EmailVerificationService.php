@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Data\Mail\EmailVerificationLinkMailData;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Config\Repository;
@@ -64,7 +65,13 @@ class EmailVerificationService {
             'token' => $plainToken,
         ]);
 
-        $this->userMailerService->sendEmailVerificationLink($email, $url, $ttl);
+        $data = new EmailVerificationLinkMailData(
+            email: $email,
+            url: $url,
+            expiresAfter: $ttl,
+        );
+
+        $this->userMailerService->sendEmailVerificationLink($data);
     }
 
     public function verifyEmailWithLink(string $email, string $token): void {

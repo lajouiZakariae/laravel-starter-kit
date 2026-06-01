@@ -15,5 +15,5 @@ Route::post('email/send-verification', [EmailVerificationController::class, 'sen
     ->name('email.link.send')
     ->middleware('throttle:send-verification-email');
 
-Route::post('email/verify', [EmailVerificationController::class, 'verifyEmail'])
+Route::post('email/verify', [EmailVerificationController::class, 'verifyEmailLink'])
     ->name('email.link.verify');

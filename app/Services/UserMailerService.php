@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Data\Mail\EmailVerificationLinkMailData;
 use App\Data\Mail\UserMailData;
 use App\Mail\EmailVerification\Link\EmailVerificationLinkMail;
 use App\Mail\EmailVerification\Otp\EmailVerificationMail;
@@ -30,9 +31,9 @@ class UserMailerService {
         $this->mailer->to($email)->queue($mail);
     }
 
-    public function sendEmailVerificationLink(string $email, string $url, int $expiresAfter): void {
-        $mail = (new EmailVerificationLinkMail($url, $expiresAfter))->onQueue('user-emails-queue');
+    public function sendEmailVerificationLink(EmailVerificationLinkMailData $data): void {
+        $mail = (new EmailVerificationLinkMail($data->url, $data->expiresAfter))->onQueue('user-emails-queue');
 
-        $this->mailer->to($email)->queue($mail);
+        $this->mailer->to($data->email)->queue($mail);
     }
 }
