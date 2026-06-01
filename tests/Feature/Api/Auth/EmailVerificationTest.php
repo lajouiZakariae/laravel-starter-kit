@@ -1,6 +1,6 @@
 <?php
 
-use App\Mail\EmailVerificationMail;
+use App\Mail\EmailVerification\Otp\EmailVerificationMail;
 use App\Models\User;
 use App\Services\OtpCacheService;
 use Illuminate\Support\Collection;
