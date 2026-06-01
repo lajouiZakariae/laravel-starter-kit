@@ -3,13 +3,24 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | JWT Auth Configuration
+    | Extra JWT Auth Configuration
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Access Token & Refresh Token TTL
     |--------------------------------------------------------------------------
     |
-    | This file contains configuration options for JWT authentication
-    | including rate limiting settings for API endpoints.
+    | The length of time (in minutes) that the access token is valid for.
+    | Defaults to 2 hours (120 minutes).
+    | The length of time (in minutes) that the refresh token is valid for.
+    | Defaults to 7 days (10080 minutes).
     |
     */
+    'ttl' => (int) env('JWT_TTL', 120),
+
+    'refresh_token_ttl' => (int) env('JWT_REFRESH_TOKEN_TTL', 10080),
 
     /*
     |--------------------------------------------------------------------------
@@ -20,19 +31,6 @@ return [
     | These values can be overridden in your .env file.
     |
     */
-
-    /*
-    |--------------------------------------------------------------------------
-    | Refresh Token TTL
-    |--------------------------------------------------------------------------
-    |
-    | The length of time (in minutes) that the refresh token is valid for.
-    | Defaults to 7 days (10080 minutes).
-    |
-    */
-    'refresh_token_ttl' => (int) env('JWT_REFRESH_TOKEN_TTL', 10080),
-
-    'ttl' => (int) env('JWT_TTL', 120),
 
     'rate_limiting' => [
         /*
@@ -54,7 +52,7 @@ return [
         | Refresh Token Rate Limit
         |--------------------------------------------------------------------------
         |
-        | Maximum number of token refresh attempts per minute per user.
+        | Maximum number of token refresh attempts per hour per user.
         |
         */
         'refresh' => [
