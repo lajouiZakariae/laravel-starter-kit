@@ -2,30 +2,40 @@
 
 namespace App\Data\Casts;
 
+use App\Exceptions\PhoneNumberException;
 use App\ValueObjects\PhoneNumber;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
-use Stringable;
 
 class PhoneNumberDataCast implements Cast {
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed {
+    public function cast(
+        DataProperty $property,
+        mixed $value,
+        array $properties,
+        CreationContext $context
+    ): ?PhoneNumber {
         if ($value instanceof PhoneNumber) {
             return $value;
         }
 
-        if (! is_string($value) && ! $value instanceof Stringable) {
-            $value = (string) $value;
+        $countryCode = data_get($properties, 'phone_number_country_code');
+
+        if (! is_string($value) || ! is_string($countryCode)) {
+            return null;
         }
 
-        return new PhoneNumber($value);
-    }
+        $phoneNumber = trim($value);
+        $countryCode = trim($countryCode);
 
-    public function uncast(DataProperty $property, mixed $value, array $context): string {
-        if (! $value instanceof PhoneNumber) {
-            return (string) $value;
+        if (blank($phoneNumber) || blank($countryCode)) {
+            return null;
         }
 
-        return $value->toString();
+        try {
+            return new PhoneNumber($phoneNumber, $countryCode);
+        } catch (PhoneNumberException) {
+            return null;
+        }
     }
 }

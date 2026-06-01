@@ -16,8 +16,8 @@ class RegisterUserData extends Data {
         public string $last_name,
         public string $email,
         public string $password,
-        public string $phone_number_country_code,
+        public ?string $phone_number_country_code,
         #[WithCast(PhoneNumberDataCast::class)]
-        public PhoneNumber $phone_number,
+        public ?PhoneNumber $phone_number,
     ) {}
 }
