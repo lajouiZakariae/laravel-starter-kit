@@ -51,11 +51,12 @@ class JWTAuthController {
         /**
          * @var LoginCredentialsData
          */
-        $credentials = LoginCredentialsData::from($request->only(['email', 'password']));
+        $credentials = LoginCredentialsData::from([
+            ...$request->only(['email', 'password']),
+            'ipAddress' => $request->ip(),
+        ]);
 
-        $ipAddress = $request->ip();
-
-        $result = $this->authService->login($credentials, $ipAddress);
+        $result = $this->authService->login($credentials);
 
         return $this->apiResponse->successResponse(new UserResource($result->user), [
             'meta' => [

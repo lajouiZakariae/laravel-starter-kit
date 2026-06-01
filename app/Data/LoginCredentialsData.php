@@ -8,5 +8,6 @@ class LoginCredentialsData extends Data {
     public function __construct(
         public string $email,
         public string $password,
+        public ?string $ipAddress = null,
     ) {}
 }
