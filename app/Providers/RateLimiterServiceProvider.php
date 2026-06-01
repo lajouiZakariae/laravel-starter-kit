@@ -64,23 +64,5 @@ class RateLimiterServiceProvider extends ServiceProvider {
 
             return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
         });
-
-        RateLimiter::for('send-verification-link', function (Request $request) use ($configRepository): Limit {
-            $userEmail = $request->string('email');
-
-            $decayMinutes = $configRepository->integer('jwt_auth.rate_limiting.send_verification_link.decay_minutes');
-
-            $maxAttempts = $configRepository->integer('jwt_auth.rate_limiting.send_verification_link.max_attempts');
-
-            return Limit::perMinutes($decayMinutes, $maxAttempts)->by($userEmail);
-        });
-
-        RateLimiter::for('verify-email-link', function (Request $request) use ($configRepository): Limit {
-            $decayMinutes = $configRepository->integer('jwt_auth.rate_limiting.verify_email_link.decay_minutes');
-
-            $maxAttempts = $configRepository->integer('jwt_auth.rate_limiting.verify_email_link.max_attempts');
-
-            return Limit::perMinutes($decayMinutes, $maxAttempts)->by($request->ip());
-        });
     }
 }

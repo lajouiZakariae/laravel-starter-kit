@@ -95,31 +95,5 @@ return [
             'max_attempts' => (int) env('SEND_PASSWORD_RESET_MAX_ATTEMPTS', 3),
             'decay_minutes' => (int) env('SEND_PASSWORD_RESET_DECAY_MINUTES', 5),
         ],
-
-        /*
-        |--------------------------------------------------------------------------
-        | Send Verification Link Rate Limit
-        |--------------------------------------------------------------------------
-        |
-        | Maximum number of verification link requests per time period per email.
-        |
-        */
-        'send_verification_link' => [
-            'max_attempts' => (int) env('SEND_VERIFICATION_LINK_MAX_ATTEMPTS', 3),
-            'decay_minutes' => (int) env('SEND_VERIFICATION_LINK_DECAY_MINUTES', 5),
-        ],
-
-        /*
-        |--------------------------------------------------------------------------
-        | Verify Email Link Rate Limit
-        |--------------------------------------------------------------------------
-        |
-        | Maximum number of email link verification attempts per minute per IP.
-        |
-        */
-        'verify_email_link' => [
-            'max_attempts' => (int) env('VERIFY_EMAIL_LINK_MAX_ATTEMPTS', 10),
-            'decay_minutes' => (int) env('VERIFY_EMAIL_LINK_DECAY_MINUTES', 1),
-        ],
     ],
 ];
