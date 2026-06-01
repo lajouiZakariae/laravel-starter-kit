@@ -25,8 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {})
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->renderable(
-            fn (NotFoundHttpException $e): JsonResponse|Response => App::make(NotFoundExceptionHandler::class)->handle($e)
-        );
+        if (request()->is('api/*')) {
+            $exceptions->renderable(
+                fn (NotFoundHttpException $e): JsonResponse|Response => App::make(NotFoundExceptionHandler::class)->handle($e)
+            );
+        }
     })
     ->create();
