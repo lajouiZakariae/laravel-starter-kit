@@ -41,8 +41,10 @@ class CountrySeeder extends Seeder {
         $countriesData
             ->map(fn (array $countryPayload): CreateCountryData => CreateCountryData::from($countryPayload))
             ->each(function (CreateCountryData $countryData): void {
+                $countryAlpha2Code = strtoupper($countryData->iso31661Alpha2);
+
                 $country = Country::query()->withoutGlobalScopes()->updateOrCreate(
-                    ['iso_3166_1_alpha2' => $countryData->iso31661Alpha2],
+                    ['iso_3166_1_alpha2' => $countryAlpha2Code],
                     [
                         'iso_3166_1_alpha3' => $countryData->iso31661Alpha3,
                         'common_name' => ($countryData->commonName->toArray()),
@@ -57,7 +59,7 @@ class CountrySeeder extends Seeder {
                 }
 
                 $country->addMediaFromString($countryData->flag)
-                    ->usingFileName("flag-{$countryData->iso31661Alpha2}.svg")
+                    ->usingFileName("flag-{$countryAlpha2Code}.svg")
                     ->toMediaCollection('flags');
 
                 $countryData->cities->each(function (CreateCityData $cityData) use ($country): void {
