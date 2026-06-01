@@ -6,6 +6,7 @@ use App\Data\ResetPasswordData;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Passwords\PasswordBrokerManager;
+use Illuminate\Config\Repository;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Password;
@@ -19,6 +20,7 @@ class PasswordResetService {
         private readonly PasswordBrokerManager $passwordBrokerManager,
         private readonly Hasher $hasher,
         private readonly Dispatcher $dispatcher,
+        private readonly Repository $configRepository,
     ) {}
 
     public function sendPasswordResetEmail(string $email): void {
@@ -48,9 +50,13 @@ class PasswordResetService {
     public function sendOtpPasswordResetEmail(User $user): void {
         $otpCode = CodeGeneratorService::generate();
 
-        $this->otpCacheService->cacheOtpCodeForUser($user, $otpCode);
+        $expire = $this->configRepository->get('auth.passwords.' . $this->configRepository->get('auth.defaults.passwords') . '.expire');
 
-        $this->userMailerService->sendPasswordResetEmail($user->email, $otpCode);
+        $ttl = now()->addMinutes($expire);
+
+        $this->otpCacheService->cacheOtpCodeForUser($user, $otpCode, $ttl);
+
+        $this->userMailerService->sendPasswordResetEmail($user->email, $otpCode, $expire);
     }
 
     public function verifyOtpPasswordResetCode(User $user, string $otpCode): void {

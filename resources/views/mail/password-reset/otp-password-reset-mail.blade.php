@@ -17,7 +17,7 @@
             <h1 style="color: #333; font-size: 32px; letter-spacing: 5px; margin: 0;">{{ $otpCode }}</h1>
         </div>
 
-        <p>This code will expire in 2 minutes for security reasons.</p>
+        <p>This code will expire in {{ $expire }} minutes for security reasons.</p>
 
         <p>If you did not request this password reset, please ignore this email.</p>
 

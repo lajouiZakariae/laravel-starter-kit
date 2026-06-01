@@ -19,7 +19,7 @@ class UserMailerService {
         $this->mailer->to($email)->send(new EmailVerificationMail($otpCode));
     }
 
-    public function sendPasswordResetEmail(string $email, string $otpCode): void {
-        $this->mailer->to($email)->send(new OtpPasswordResetMail($otpCode));
+    public function sendPasswordResetEmail(string $email, string $otpCode, int $expire): void {
+        $this->mailer->to($email)->send(new OtpPasswordResetMail($otpCode, $expire));
     }
 }

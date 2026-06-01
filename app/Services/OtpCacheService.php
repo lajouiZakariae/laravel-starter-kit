@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
@@ -11,14 +12,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class OtpCacheService {
     public function __construct(private readonly string $cacheKey) {}
 
-    public function cacheOtpCodeForUser(User $user, string $otpCode): void {
+    public function cacheOtpCodeForUser(User $user, string $otpCode, ?CarbonInterface $ttl = null): void {
         $cacheKey = $this->getCacheKeyForUser($user);
 
-        $ttl = Date::now()->addMinutes(2);
+        $preparedTtl = $ttl ?? Date::now()->addMinutes(2);
 
         $cacheManager = App::make(CacheManager::class);
 
-        $cacheManager->put($cacheKey, $otpCode, $ttl);
+        $cacheManager->put($cacheKey, $otpCode, $preparedTtl);
     }
 
     public function getOtpCodeForUser(User $user): string {
