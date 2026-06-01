@@ -12,6 +12,5 @@ class ResetPasswordData extends Data {
         public string $email,
         public string $token,
         public string $password,
-        public string $passwordConfirmation,
     ) {}
 }

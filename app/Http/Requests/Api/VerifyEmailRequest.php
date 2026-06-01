@@ -4,8 +4,8 @@ namespace App\Http\Requests\Api;
 
 use App\Models\User;
 use App\Rules\ValidOtpFormatRule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class VerifyEmailRequest extends FormRequest {
     /**
@@ -18,18 +18,11 @@ class VerifyEmailRequest extends FormRequest {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        $rules = [
+        return [
             'otp_code' => ['required', 'string', new ValidOtpFormatRule],
-            'email' => [
-                'required',
-                'email',
-                Rule::exists(User::class, 'email'),
-            ],
         ];
-
-        return $rules;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api;
 
 use App\Models\User;
 use App\Rules\ValidOtpFormatRule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,7 +19,7 @@ class OtpResetPasswordRequest extends FormRequest {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
         return [
@@ -28,7 +29,7 @@ class OtpResetPasswordRequest extends FormRequest {
                 Rule::exists(User::class, 'email'),
             ],
             'otp_code' => ['required', 'string', new ValidOtpFormatRule],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
         ];
     }
 }
