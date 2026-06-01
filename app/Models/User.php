@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use App\Casts\AsPhoneNumber;
 use App\Mail\PasswordResetMail;
+use App\ValueObjects\PhoneNumber;
+use Carbon\Carbon;
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,10 +28,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $full_name
  * @property string $email
  * @property string $password
- * @property \App\ValueObjects\PhoneNumber $phone_number
- * @property \Carbon\Carbon $email_verified_at
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property ?PhoneNumber $phone_number
+ * @property Carbon $email_verified_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 #[Fillable([
     'first_name',
@@ -43,7 +46,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
     'remember_token',
 ])]
 class User extends Authenticatable implements CanResetPassword, JWTSubject {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     use Notifiable;
