@@ -81,7 +81,7 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
     }
 
     /**
-     * Send a password reset notification to the user.
+     * This method is used to send Link based password reset emails to users.
      *
      * @param  string  $token
      */
@@ -90,13 +90,13 @@ class User extends Authenticatable implements CanResetPassword, JWTSubject {
 
         $mailer = App::make(Mailer::class);
 
-        $frontURI = Uri::of($configRepository->string('app.frontend_url'))
+        $frontURI = Uri::of($configRepository->get('app.frontend_url'))
             ->withPath('reset-password')
             ->withQuery(['email' => $this->email, 'token' => $token])
             ->toStringable()
             ->toString();
 
-        $count = $configRepository->integer('auth.passwords.' . $configRepository->string('auth.defaults.passwords') . '.expire');
+        $count = $configRepository->get('auth.passwords.' . $configRepository->get('auth.defaults.passwords') . '.expire');
 
         $mailer->to($this->email)->send(new PasswordResetMail($frontURI, $count));
     }
