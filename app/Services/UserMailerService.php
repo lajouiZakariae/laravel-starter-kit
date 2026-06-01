@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Data\Mail\UserMailData;
+use App\Mail\EmailVerification\Link\EmailVerificationLinkMail;
 use App\Mail\EmailVerification\Otp\EmailVerificationMail;
 use App\Mail\OtpPasswordResetMail;
 use App\Mail\UserRegisteredMail;
@@ -25,6 +26,12 @@ class UserMailerService {
 
     public function sendPasswordResetEmail(string $email, string $otpCode, int $expire): void {
         $mail = (new OtpPasswordResetMail($otpCode, $expire))->onQueue('user-emails-queue');
+
+        $this->mailer->to($email)->queue($mail);
+    }
+
+    public function sendEmailVerificationLink(string $email, string $url, int $expiresAfter): void {
+        $mail = (new EmailVerificationLinkMail($url, $expiresAfter))->onQueue('user-emails-queue');
 
         $this->mailer->to($email)->queue($mail);
     }
