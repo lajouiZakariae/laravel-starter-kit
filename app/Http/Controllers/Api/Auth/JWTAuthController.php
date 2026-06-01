@@ -33,11 +33,11 @@ class JWTAuthController {
 
         return $this->apiResponse->createdResponse(new UserResource($authResultData->user), [
             'meta' => [
-                'token' => $authResultData->token,
+                'access_token' => $authResultData->token,
                 'refresh_token' => $authResultData->refreshToken,
                 'token_type' => $authResultData->tokenType,
-                'expires_in' => $this->authService->getTokenExpirationTime(),
-                'refresh_expires_in' => $this->authService->getRefreshTokenExpirationTime(),
+                'access_token_expires_in' => $this->authService->getTokenExpirationTime(),
+                'refresh_token_expires_in' => $this->authService->getRefreshTokenExpirationTime(),
             ],
         ]);
     }
@@ -59,11 +59,11 @@ class JWTAuthController {
 
         return $this->apiResponse->successResponse(new UserResource($result->user), [
             'meta' => [
-                'token' => $result->token,
+                'access_token' => $result->token,
                 'refresh_token' => $result->refreshToken,
                 'token_type' => $result->tokenType,
-                'expires_in' => $this->authService->getTokenExpirationTime(),
-                'refresh_expires_in' => $this->authService->getRefreshTokenExpirationTime(),
+                'access_token_expires_in' => $this->authService->getTokenExpirationTime(),
+                'refresh_token_expires_in' => $this->authService->getRefreshTokenExpirationTime(),
             ],
         ]);
     }
@@ -93,11 +93,11 @@ class JWTAuthController {
 
         return $this->apiResponse->successResponse(new UserResource($result->user), [
             'meta' => [
-                'token' => $result->token,
+                'access_token' => $result->token,
                 'refresh_token' => $result->refreshToken,
                 'token_type' => $result->tokenType,
-                'expires_in' => $this->authService->getTokenExpirationTime(),
-                'refresh_expires_in' => $this->authService->getRefreshTokenExpirationTime(),
+                'access_token_expires_in' => $this->authService->getTokenExpirationTime(),
+                'refresh_token_expires_in' => $this->authService->getRefreshTokenExpirationTime(),
             ],
         ]);
     }
