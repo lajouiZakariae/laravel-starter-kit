@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Requests\Api\OtpResetPasswordRequest;
 use App\Http\Requests\Api\SendPasswordResetRequest;
 use App\Http\Requests\Api\VerifyPasswordResetRequest;
-use App\Http\Responses\ApiResponse;
+use App\Contracts\Http\ApiResponse;
 use App\Models\User;
 use App\Services\PasswordResetService;
 use Illuminate\Http\JsonResponse;

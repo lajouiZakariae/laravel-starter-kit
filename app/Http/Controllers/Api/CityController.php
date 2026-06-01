@@ -6,7 +6,7 @@ use App\Data\PaginationData;
 use App\Data\SortingData;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\City\CityResource;
-use App\Http\Responses\ApiResponse;
+use App\Contracts\Http\ApiResponse;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;

@@ -2,7 +2,7 @@
 
 namespace App\Exceptions\Handlers;
 
-use App\Http\Responses\ApiResponse;
+use App\Contracts\Http\ApiResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;

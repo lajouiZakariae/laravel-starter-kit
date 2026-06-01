@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Responses;
+namespace App\Support\Http;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
