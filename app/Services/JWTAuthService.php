@@ -52,7 +52,9 @@ class JWTAuthService {
         ]);
     }
 
-    public function login(LoginCredentialsData $credentials, ?string $ipAddress = null): AuthResultData {
+    public function login(LoginCredentialsData $credentials): AuthResultData {
+        $ipAddress = $credentials->ipAddress;
+
         $this->loginRateLimiterService->checkRateLimit($ipAddress);
 
         if (! JWTAuth::attempt(['email' => $credentials->email, 'password' => $credentials->password])) {
