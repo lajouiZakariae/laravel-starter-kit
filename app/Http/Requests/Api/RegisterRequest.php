@@ -2,13 +2,11 @@
 
 namespace App\Http\Requests\Api;
 
-use App\Models\Country;
 use App\Models\User;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
-use Propaganistas\LaravelPhone\Rules\Phone;
 
-class RegisterRequest extends FormRequest {
+class RegisterRequest extends BaseRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -16,19 +14,22 @@ class RegisterRequest extends FormRequest {
         return true;
     }
 
+    public function prepareForValidation(): void {
+        $this->preparePhoneNumberForValidation();
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone_number_country_code' => ['required', 'string', Rule::exists(Country::class, 'iso_3166_1_alpha2')->where('is_active', true)],
-            'phone_number' => ['required', (new Phone)->countryField('phone_number_country_code')],
+            'password' => ['required', 'string', 'min:8'],
+            ...$this->phoneRules(optional: true),
         ];
     }
 }
