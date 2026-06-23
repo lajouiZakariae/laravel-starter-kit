@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\OtpPasswordResetController;
-use App\Http\Controllers\Api\Auth\PasswordResetController;
+use App\Http\Controllers\Api\Auth\LinkBased\PasswordResetController;
+use App\Http\Controllers\Api\Auth\OtpBased\OtpPasswordResetController;
 use Illuminate\Support\Facades\Route;
 
 // Reset Link based password reset routes

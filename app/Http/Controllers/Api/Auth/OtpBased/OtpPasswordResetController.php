@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\Auth\OtpBased;
 
+use App\Contracts\Http\ApiResponse;
 use App\Http\Requests\Api\OtpResetPasswordRequest;
 use App\Http\Requests\Api\SendPasswordResetRequest;
 use App\Http\Requests\Api\VerifyPasswordResetRequest;
-use App\Contracts\Http\ApiResponse;
 use App\Models\User;
 use App\Services\PasswordResetService;
 use Illuminate\Http\JsonResponse;
