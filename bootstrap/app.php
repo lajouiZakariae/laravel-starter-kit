@@ -7,21 +7,14 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
         commands: __DIR__ . '/../routes/console.php',
-        api: __DIR__ . '/../routes/api/api.php',
+        api: __DIR__ . '/../routes/api.php',
         health: '/up',
-        then: function (): void {
-            Route::middleware(['api'])
-                ->prefix('api/auth')
-                ->name('api.auth.')
-                ->group(base_path('routes/api/auth/index.php'));
-        },
     )
     ->withMiddleware(function (Middleware $middleware): void {})
     ->withExceptions(function (Exceptions $exceptions): void {

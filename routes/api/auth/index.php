@@ -13,17 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Public routes (no authentication required)
-Route::post('register', [JWTAuthController::class, 'register'])->name('register');
+Route::prefix('auth')
+    ->name('api.auth.')
+    ->group(function () {
+        Route::post('register', [JWTAuthController::class, 'register'])->name('register');
 
-Route::post('login', [JWTAuthController::class, 'login'])->name('login');
+        Route::post('login', [JWTAuthController::class, 'login'])->name('login');
 
-Route::post('refresh', [JWTAuthController::class, 'refresh'])
-    ->middleware('throttle:refresh')
-    ->name('refresh');
+        Route::post('refresh', [JWTAuthController::class, 'refresh'])
+            ->middleware('throttle:refresh')
+            ->name('refresh');
 
-Route::get('user', [JWTAuthController::class, 'me'])->name('user')->middleware('auth:api');
+        Route::get('user', [JWTAuthController::class, 'me'])->name('user')->middleware('auth:api');
 
-require __DIR__ . '/password-reset.php';
+        require __DIR__ . '/password-reset.php';
 
-require __DIR__ . '/email-verification.php';
+        require __DIR__ . '/email-verification.php';
+    });
