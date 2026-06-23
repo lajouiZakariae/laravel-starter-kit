@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\Auth\EmailVerificationService;
 use App\Services\Auth\LinkBasedPasswordResetService;
 use App\Services\Auth\OtpPasswordResetService;
-use App\Services\EmailVerificationService;
 use App\Services\OtpCacheService;
 use Illuminate\Support\ServiceProvider;
 

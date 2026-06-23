@@ -1,47 +1,22 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Auth;
 
 use App\Data\Mail\EmailVerificationLinkMailData;
 use App\Models\User;
+use App\Services\UserMailerService;
 use Carbon\Carbon;
 use Illuminate\Config\Repository;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class EmailVerificationService {
+class LinkBasedEmailVerificationService {
     public function __construct(
         private readonly UserMailerService $userMailerService,
-        private readonly OtpCacheService $otpCacheService,
         private readonly Repository $configRepository,
         private readonly ConnectionInterface $db,
     ) {}
-
-    public function sendVerificationEmail(User $user): void {
-        $otpCode = CodeGeneratorService::generate();
-
-        $this->otpCacheService->cacheOtpCodeForUser($user, $otpCode);
-
-        $this->userMailerService->sendVerificationEmail($user->email, $otpCode);
-    }
-
-    public function verifyEmail(User $user, string $otpCode): void {
-        $otpCodeFromCache = $this->otpCacheService->getOtpCodeForUser($user);
-
-        $isOtpCodeInvalid = $otpCodeFromCache !== $otpCode;
-
-        if ($isOtpCodeInvalid) {
-            throw ValidationException::withMessages([
-                'otp_code' => ['Invalid OTP code provided'],
-            ]);
-        }
-
-        $this->otpCacheService->deleteOtpCodeForUser($user);
-
-        $user->markEmailAsVerified();
-    }
 
     public function sendVerificationLink(string $email): void {
         $plainToken = Str::random(64);
