@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Auth\LinkBasedPasswordResetService;
+use App\Services\Auth\OtpPasswordResetService;
 use App\Services\EmailVerificationService;
 use App\Services\OtpCacheService;
-use App\Services\PasswordResetService;
 use Illuminate\Support\ServiceProvider;
 
 class OtpCacheServiceProvider extends ServiceProvider {
@@ -23,7 +24,16 @@ class OtpCacheServiceProvider extends ServiceProvider {
             ));
 
         app()
-            ->when(PasswordResetService::class)
+            ->when(OtpPasswordResetService::class)
+            ->needs(OtpCacheService::class)
+            ->give(fn (): OtpCacheService => (
+                new OtpCacheService(
+                    cacheKey: 'password_reset',
+                )
+            ));
+
+        app()
+            ->when(LinkBasedPasswordResetService::class)
             ->needs(OtpCacheService::class)
             ->give(fn (): OtpCacheService => (
                 new OtpCacheService(

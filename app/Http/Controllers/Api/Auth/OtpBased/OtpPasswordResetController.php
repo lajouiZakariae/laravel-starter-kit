@@ -7,12 +7,12 @@ use App\Http\Requests\Api\OtpResetPasswordRequest;
 use App\Http\Requests\Api\SendPasswordResetRequest;
 use App\Http\Requests\Api\VerifyPasswordResetRequest;
 use App\Models\User;
-use App\Services\PasswordResetService;
+use App\Services\Auth\OtpPasswordResetService;
 use Illuminate\Http\JsonResponse;
 
 class OtpPasswordResetController {
     public function __construct(
-        private readonly PasswordResetService $passwordResetService,
+        private readonly OtpPasswordResetService $passwordResetService,
         private readonly ApiResponse $apiResponse,
     ) {}
 

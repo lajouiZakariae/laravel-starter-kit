@@ -6,7 +6,7 @@ use App\Contracts\Http\ApiResponse;
 use App\Data\ResetPasswordData;
 use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Http\Requests\Api\SendPasswordResetRequest;
-use App\Services\PasswordResetService;
+use App\Services\Auth\LinkBasedPasswordResetService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
  */
 class PasswordResetController {
     public function __construct(
-        private readonly PasswordResetService $passwordResetService,
+        private readonly LinkBasedPasswordResetService $linkBasedPasswordResetService,
         private readonly ApiResponse $apiResponse,
     ) {}
 
@@ -22,7 +22,7 @@ class PasswordResetController {
      * Send password reset code
      */
     public function sendPasswordResetCode(SendPasswordResetRequest $request): JsonResponse {
-        $this->passwordResetService->sendPasswordResetEmail($request->string('email'));
+        $this->linkBasedPasswordResetService->sendPasswordResetEmail($request->string('email'));
 
         return $this->apiResponse->successResponse(['message' => 'Password reset code sent']);
     }
@@ -33,7 +33,7 @@ class PasswordResetController {
     public function resetPassword(ResetPasswordRequest $request): JsonResponse {
         $resetPasswordData = ResetPasswordData::from($request);
 
-        $this->passwordResetService->resetPassword($resetPasswordData);
+        $this->linkBasedPasswordResetService->resetPassword($resetPasswordData);
 
         return $this->apiResponse->successResponse(['message' => 'Password reset']);
     }
